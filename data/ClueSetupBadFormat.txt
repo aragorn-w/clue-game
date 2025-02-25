@@ -1,0 +1,13 @@
+// Rooms and room cards
+Boom, Curb Room, C
+Room, Kitchen, K
+Room, Ballroom, B
+Room, Rec Room, R
+Room, Library, L
+Room, Sauna, S
+Room, Dart Room, D
+Room, Office, O
+Room, Honey Room, H
+// Other spaces on board
+Space, Unused, X
+Space, Walkway, W
