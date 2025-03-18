@@ -102,6 +102,7 @@ public class Board {
 		try (Scanner scanner = new Scanner(layoutFile)) {
 			int rowIndex = 0;
 			int oldNumCols = -1;
+			
 			while (scanner.hasNextLine()) {
 				String[] splitLine = scanner.nextLine().split(",");
 				numCols = splitLine.length;
@@ -236,6 +237,7 @@ public class Board {
 					if (cell.isDoorway()) {
 						int doorwayRoomRowIndex = rowIndex;
 						int doorwayRoomColIndex = colIndex;
+						
 						switch (cell.getDoorDirection()) {
 							case DoorDirection.UP -> doorwayRoomRowIndex--;
 							case DoorDirection.RIGHT -> doorwayRoomColIndex++;
