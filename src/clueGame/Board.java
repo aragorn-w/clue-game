@@ -302,10 +302,10 @@ public class Board {
 	private void findAllTargets(BoardCell cell, int roll) {
 		for (BoardCell adjCell: cell.getAdjList()) {
 			// If the cell is a room, add it to the targets and return early since the player can't move through rooms
-			if (cell.isRoom()) {
-				targets.add(cell);
-				return;
-			}
+//			if (cell.isRoom()) {
+//				targets.add(cell);
+//				return;
+//			}
 			
 			if (visited.contains(adjCell)) {
 				continue;
@@ -318,6 +318,9 @@ public class Board {
 				if (roll == 1) {
 					targets.add(adjCell);
 				} else {
+					if (adjCell.isRoom()) {
+						targets.add(adjCell);
+					}
 					findAllTargets(adjCell, roll - 1);
 				}
 			}
