@@ -1,10 +1,10 @@
 /*
  * Authors: Aragorn Wang, Anya Streit
- * 
+ *
  * Class: BoardTestsExp
- * 
+ *
  * Purpose: This class tests the adjacency and target generation of the TestBoard class.
- * 
+ *
  * Responsibilites: BoardTestsExp tests the adjacency and target generation of the TestBoard class by creating a TestBoard object and testing the adjacency and target generation of the cells on the board.
  */
 
@@ -21,12 +21,12 @@ import experiment.TestBoardCell;
 
 public class BoardTestsExp {
 	private TestBoard board;
-	
+
 	@Before
 	public void setUp() {
 		board = new TestBoard();
 	}
-	
+
 	@Test
 	public void testTopLeftAdj() {
 		// Test Top Left Corner (4x4)
@@ -36,7 +36,7 @@ public class BoardTestsExp {
 		Assert.assertTrue(adj.contains(board.getCell(1, 0)));
 		Assert.assertEquals(2, adj.size());
 	}
-	
+
 	@Test
 	public void testBottomRightAdj() {
 		// Test Bottom Right Corner
@@ -55,7 +55,7 @@ public class BoardTestsExp {
 		Assert.assertTrue(adj.contains(board.getCell(1, 0)));
 		Assert.assertTrue(adj.contains(board.getCell(2, 1)));
 		Assert.assertTrue(adj.contains(board.getCell(3, 0)));
-		Assert.assertEquals(3, adj.size());	
+		Assert.assertEquals(3, adj.size());
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class BoardTestsExp {
 		Assert.assertTrue(adj.contains(board.getCell(1, 2)));
 		Assert.assertEquals(4, adj.size());
 	}
-	
+
 	@Test
 	public void testMakeTargetsNormal() {
 		// test normal targets with a roll of 2.
@@ -91,7 +91,7 @@ public class BoardTestsExp {
 		Assert.assertTrue(targets.contains(board.getCell(1, 1)));
 		Assert.assertEquals(3, targets.size());
 	}
-	
+
 	@Test
 	public void testMakeTargetsSpecial() {
 		// test targets when there is a room and an occupied cell
@@ -105,7 +105,7 @@ public class BoardTestsExp {
 		Assert.assertTrue(targets.contains(board.getCell(1, 1)));
 		Assert.assertEquals(2, targets.size());
 	}
-	
+
 	@Test
 	public void testOneStep() {
 		// test normal targets with a roll of 1.
@@ -130,7 +130,7 @@ public class BoardTestsExp {
 		Assert.assertTrue(targets.contains(board.getCell(1, 0)));
 		Assert.assertEquals(6, targets.size());
 	}
-	
+
 	@Test
 	public void testMaxRoll() {
 		// test normal targets with a roll of 6.

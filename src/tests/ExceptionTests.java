@@ -1,17 +1,17 @@
-/* 
+/*
  * Class: ExceptionTests
- * 
+ *
  * Purpose: This class tests that exceptions are thrown appropriately when loading config files.
- * 
+ *
  * Responsibilites: ExceptionTests tests that exceptions are thrown when loading config files that are not formatted correctly by asserting that the number of columns in the layout file is consistent, that the room specified in the layout file is in the legend, and that the setup file is formatted correctly.
- * 
+ *
  * Authors: Aragorn Wang, Anya Streit
  */
 
 package tests;
 
 /*
- * This program tests that, when loading config files, exceptions 
+ * This program tests that, when loading config files, exceptions
  * are thrown appropriately.
  */
 

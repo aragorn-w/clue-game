@@ -1,10 +1,10 @@
 /*
  * Class: FileInitTests
- * 
+ *
  * Purpose: This program tests that the layout and setup config files are loaded properly.
- * 
+ *
  * Responsibilities: FileInitTests tests room labels, board dimensions, door directions, number of doorways, rooms, and room cells.
- * 
+ *
  * Authors: Aragorn Wang, Anya Streit
  */
 
@@ -54,7 +54,7 @@ public class FileInitTests {
 		assertEquals("Ballroom", board.getRoom('B').getName() );
 
 		assertEquals("Rec Room", board.getRoom('R').getName() );
-		
+
 		assertEquals("Dart Room", board.getRoom('D').getName() );
 
 		assertEquals("Walkway", board.getRoom('W').getName() );
@@ -128,7 +128,7 @@ public class FileInitTests {
 		assertEquals( room.getName(), "Kitchen" ) ;
 		assertTrue( cell.isLabel() );
 		assertTrue( room.getLabelCell() == cell );
-		
+
 		// this is a room center cell to test
 		cell = board.getCell(18, 17);
 		room = board.getRoom( cell ) ;
@@ -136,14 +136,14 @@ public class FileInitTests {
 		assertEquals( room.getName(), "Dart Room" ) ;
 		assertTrue( cell.isRoomCenter() );
 		assertTrue( room.getCenterCell() == cell );
-		
+
 		// this is a secret passage test
 		cell = board.getCell(19, 3);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Honey Room" ) ;
 		assertTrue( cell.getSecretPassage() == 'R' );
-		
+
 		// test a walkway
 		cell = board.getCell(2, 0);
 		room = board.getRoom( cell ) ;
@@ -152,7 +152,7 @@ public class FileInitTests {
 		assertEquals( room.getName(), "Walkway" ) ;
 		assertFalse( cell.isRoomCenter() );
 		assertFalse( cell.isLabel() );
-		
+
 		// test a closet
 		cell = board.getCell(6, 11);
 		room = board.getRoom( cell ) ;

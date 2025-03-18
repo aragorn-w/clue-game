@@ -1,10 +1,10 @@
 /*
  * Enum: DoorDirection
- * 
+ *
  * Purpose: The DoorDirection enum is used to represent the direction of a door on a board cell.
- * 
+ *
  * Responsibilities: The DoorDirection enum is responsible for storing the possible directions of a door on a board cell and providing a method to get the direction of a door based on a character.
- * 
+ *
  * Authors: Aragorn Wang, Anya Streit
  */
 
