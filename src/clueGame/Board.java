@@ -300,7 +300,7 @@ public class Board {
 
 	private void findAllTargets(BoardCell cell, int roll) {
 		visited.add(cell);
-		
+
 		for (BoardCell adjCell: cell.getAdjList()) {
 			if (visited.contains(adjCell)) {
 				continue;
@@ -308,7 +308,6 @@ public class Board {
 
 			visited.add(adjCell);
 
-			// We only add the cell to the targets if it is not occupied since the player can't move to or through an occupied cell
 			if (!adjCell.isOccupied()) {
 				if (roll == 1 || adjCell.isRoomCenter()) {
 					targets.add(adjCell);
@@ -316,22 +315,17 @@ public class Board {
 					if (adjCell.isRoom()) {
 						targets.add(adjCell);
 					}
-				
+
 					findAllTargets(adjCell, roll - 1);
 				}
-				
+
 			} else if (adjCell.isRoomCenter()) {
 				targets.add(adjCell);
-//				if (roll == 1) {
-//				} else {
-//					findAllTargets(adjCell, roll - 1);					
-//				}
-				
 			}
 
 			visited.remove(adjCell);
 		}
-		
+
 		visited.remove(cell);
 	}
 
