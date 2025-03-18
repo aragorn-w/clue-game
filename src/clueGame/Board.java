@@ -323,6 +323,9 @@ public class Board {
 					}
 					findAllTargets(adjCell, roll - 1);
 				}
+			} else if (adjCell.isRoomCenter()) {
+				targets.add(adjCell);
+				findAllTargets(adjCell, roll - 1);
 			}
 			
 			visited.remove(adjCell);
