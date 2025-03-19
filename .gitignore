@@ -3,6 +3,8 @@
 .settings/
 .classpath
 
+.vscode/
+
 bin/
 
 lib/
