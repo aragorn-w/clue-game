@@ -258,6 +258,10 @@ public class Board {
 		}
 	}
 
+	public void deal() {
+		
+	}
+
 	public static Board getInstance() {
 		if (theInstance == null) {
 			theInstance = new Board();
