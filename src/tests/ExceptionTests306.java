@@ -8,7 +8,9 @@ package tests;
 import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
+
 import clueGame.BadConfigFormatException;
 import clueGame.Board;
 

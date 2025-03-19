@@ -14,11 +14,8 @@ package tests;
  * This program tests that config files are loaded properly.
  */
 
-// Doing a static import allows me to write assertEquals rather than
-// Assert.assertEquals
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -105,7 +102,7 @@ public class FileInitTests {
 				if (cell.isDoorway())
 					numDoors++;
 			}
-		Assert.assertEquals(11, numDoors);
+		assertEquals(11, numDoors);
 	}
 
 	// Test a few room cells to ensure the room initial is correct.

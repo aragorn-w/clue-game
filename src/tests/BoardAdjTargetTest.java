@@ -10,9 +10,9 @@
 
 package tests;
 
-import static org.junit.Assert.*;
-
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
