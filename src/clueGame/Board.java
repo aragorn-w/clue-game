@@ -208,31 +208,18 @@ public class Board {
 				} else if (cell.isWalkway()) {
 					// Walkways are adjacent to walkways and doorway walkways
 					
-					if (rowIndex > 0) {
-						BoardCell cellAbove = getCell(rowIndex - 1, colIndex);
-						if (cellAbove.isWalkway()) {
-							cell.addAdj(cellAbove);
+					// Even-indexed elements are row indices, odd-indexed elements are column indices
+					int[] flatAdjIndices = {rowIndex - 1, colIndex, rowIndex, colIndex + 1,
+											rowIndex + 1, colIndex, rowIndex, colIndex - 1};
+					for (int index = 0; index < flatAdjIndices.length; index += 2) {
+						if (flatAdjIndices[index] < 0 || flatAdjIndices[index] >= numRows ||
+							flatAdjIndices[index + 1] < 0 || flatAdjIndices[index + 1] >= numCols) {
+							continue;
 						}
-					}
-
-					if (colIndex < numCols - 1) {
-						BoardCell cellToRight = getCell(rowIndex, colIndex + 1);
-						if (cellToRight.isWalkway()) {
-							cell.addAdj(cellToRight);
-						}
-					}
-
-					if (rowIndex < numRows - 1) {
-						BoardCell cellBelow = getCell(rowIndex + 1, colIndex);
-						if (cellBelow.isWalkway()) {
-							cell.addAdj(cellBelow);
-						}
-					}
-
-					if (colIndex > 0) {
-						BoardCell cellToLeft = getCell(rowIndex, colIndex - 1);
-						if (cellToLeft.isWalkway()) {
-							cell.addAdj(cellToLeft);
+						
+						BoardCell adjCell = getCell(flatAdjIndices[index], flatAdjIndices[index + 1]);
+						if (adjCell.isWalkway()) {
+							cell.addAdj(adjCell);
 						}
 					}
 
