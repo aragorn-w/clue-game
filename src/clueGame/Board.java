@@ -60,7 +60,7 @@ public class Board {
 			loadLayoutConfig();
 			calcAdjLists();
 		} catch (BadConfigFormatException | FileNotFoundException exception) {
-			
+			System.err.println("Initialization failed: " + exception.getMessage());
 		}
 	}
 
