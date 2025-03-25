@@ -81,10 +81,10 @@ public class Board {
 					String roomLabel = markerInfo[1];
 					char initial = markerInfo[2].charAt(0);
 
+					roomMap.put(initial, new Room(roomLabel));
 					switch (roomType) {
-						case ROOM_TYPE_LABEL -> roomMap.put(initial, new Room(roomLabel));
+						case ROOM_TYPE_LABEL -> {}
 						case SPACE_TYPE_LABEL -> {
-							roomMap.put(initial, new Room(roomLabel));
 							if (roomLabel.equals(WALKWAY_LABEL)) {
 								walkwayInitial = initial;
 							} else if (roomLabel.equals(UNUSED_LABEL)) {
@@ -202,12 +202,12 @@ public class Board {
 		for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
 			for (int colIndex = 0; colIndex < numCols; colIndex++) {
 				BoardCell cell = getCell(rowIndex, colIndex);
-
+				
 				if (cell.isSecretPassage()) {
 					handleSecretPassage(cell);
 				} else if (cell.isWalkway()) {
 					// Walkways are adjacent to walkways and doorway walkways
-
+					
 					if (rowIndex > 0) {
 						BoardCell cellAbove = getCell(rowIndex - 1, colIndex);
 						if (cellAbove.isWalkway()) {
