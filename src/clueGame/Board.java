@@ -54,7 +54,7 @@ public class Board {
 			loadLayoutConfig();
 			calcAdjLists();
 		} catch (BadConfigFormatException | FileNotFoundException exception) {
-
+			
 		}
 	}
 
@@ -85,7 +85,7 @@ public class Board {
 								unusedInitial = initial;
 							}
 						}
-						default -> throw new Exception("Invalid room type \"" + roomType + "\" in setup config file.");
+						default -> throw new Exception("Invalid room type \"" + roomType + "\" in setup config.");
 					}
 				} catch (Exception exception) {
 					scanner.close();
@@ -117,7 +117,7 @@ public class Board {
 						Room room = getRoom(initial);
 						if (room == null) {
 							// if initial is not a valid room, then the cell is invalid
-							throw new Exception("Invalid room " + initial + " in layout config file.");
+							throw new Exception("Invalid room " + initial + " in layout config.");
 						}
 
 						BoardCell cell = new BoardCell(rowIndex, colIndex, initial);
@@ -157,7 +157,7 @@ public class Board {
 											cell.setSecretPassage(special);
 										} else {
 											// if special is not a valid room, then the cell is invalid
-											throw new Exception("Invalid cell " + marker + " in layout config file.");
+											throw new Exception("Invalid cell " + marker + " in layout config.");
 										}
 									}
 								}
@@ -172,7 +172,7 @@ public class Board {
 
 					if (oldNumCols != -1 && oldNumCols != numCols) {
 						// if the number of columns is inconsistent, then the layout is invalid
-						throw new Exception("Inconsistent number of columns in layout config file found at row " + rowIndex + ".");
+						throw new Exception("Inconsistent number of columns in layout config found at row " + rowIndex + ".");
 					}
 					oldNumCols = numCols;
 				} catch (Exception exception) {
@@ -200,7 +200,8 @@ public class Board {
 				if (cell.isSecretPassage()) {
 					BoardCell startingRoomCenter = getRoom(cell).getCenterCell();
 					BoardCell endingRoomCenter = getRoom(cell.getSecretPassage()).getCenterCell();
-
+					
+					// Secret passages mean we need to add the two room centers as adjacent to each other
 					startingRoomCenter.addAdj(endingRoomCenter);
 					endingRoomCenter.addAdj(startingRoomCenter);
 				} else if (cell.isWalkway()) {
@@ -324,7 +325,6 @@ public class Board {
 
 					findAllTargets(adjCell, roll - 1);
 				}
-
 			} else if (adjCell.isRoomCenter()) {
 				targets.add(adjCell);
 			}
