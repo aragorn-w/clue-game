@@ -6,6 +6,12 @@
  * Responsibilities: This custom checked exception is responsible for throwing an exception when the setup or layout config file is invalid.
  *
  * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: March 25, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
  */
 
 package clueGame;

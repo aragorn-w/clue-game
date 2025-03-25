@@ -6,6 +6,12 @@
  * Responsibilities: The Board class is responsible for loading the layout and setup config files, initializing the board, and storing the grid of cells and room map. It is also responsible for calculating the adjacency lists of each cell, dealing the cards, and calculating the targets for a player. The Board class is also responsible for storing the number of rows and columns in the grid, the walkway and unused initials, and the layout and setup config file paths. The Board class is also responsible for storing the targets and visited cells for a player.
  *
  * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: March 25, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
  */
 
 package clueGame;

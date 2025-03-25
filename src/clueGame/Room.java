@@ -6,6 +6,12 @@
  * Responsibilities: The Room class is responsible for storing the name of the room, the center cell of the room, and the label cell of the room.
  *
  * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: March 25, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
  */
 
 package clueGame;

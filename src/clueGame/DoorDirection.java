@@ -6,6 +6,12 @@
  * Responsibilities: The DoorDirection enum is responsible for storing the possible directions of a door on a board cell and providing a method to get the direction of a door based on a character. The DoorDirection enum is also responsible for throwing an exception if the character is not a valid door direction. The DoorDirection enum is used by the BoardCell class to store the direction of a door on a board cell. The DoorDirection enum is also used by the Board class to load the board configuration from a file.
  *
  * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: March 25, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
  */
 
 package clueGame;
