@@ -6,6 +6,12 @@
  * Responsibilites: ExceptionTests tests that exceptions are thrown when loading config files that are not formatted correctly by asserting that the number of columns in the layout file is consistent, that the room specified in the layout file is in the legend, and that the setup file is formatted correctly.
  *
  * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: March 25, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
  */
 
 package tests;
