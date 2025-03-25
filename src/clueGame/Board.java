@@ -70,13 +70,13 @@ public class Board {
 		File setupFile = new File(setupConfigFile);
 		try (Scanner scanner = new Scanner(setupFile)) {
 			while (scanner.hasNextLine()) {
-				String splitLine = scanner.nextLine();
-				if (splitLine.substring(0, 2).equals("//")) {
+				String line = scanner.nextLine();
+				if (line.substring(0, 2).equals("//")) {
 					continue;
 				}
 
 				try {
-					String[] markerInfo = splitLine.split(", ");
+					String[] markerInfo = line.split(", ");
 					String roomType = markerInfo[0];
 					String roomLabel = markerInfo[1];
 					char initial = markerInfo[2].charAt(0);
@@ -107,17 +107,17 @@ public class Board {
 		File layoutFile = new File(layoutConfigFile);
 		try (Scanner scanner = new Scanner(layoutFile)) {
 			int rowIndex = 0;
-			int oldNumCols = -1;
+			int expectedNumCols = -1;
 			
 			while (scanner.hasNextLine()) {
-				String[] splitLine = scanner.nextLine().split(",");
-				numCols = splitLine.length;
+				String[] line = scanner.nextLine().split(",");
+				numCols = line.length;
 
 				ArrayList<BoardCell> row = new ArrayList<>();
 
 				try {
 					int colIndex = 0;
-					for (String marker: splitLine) {
+					for (String marker: line) {
 						char initial = marker.charAt(0);
 						// if room is null, then the initial is not a valid room
 						Room room = getRoom(initial);
@@ -176,11 +176,11 @@ public class Board {
 						colIndex++;
 					}
 
-					if (oldNumCols != -1 && oldNumCols != numCols) {
+					if (expectedNumCols != -1 && expectedNumCols != numCols) {
 						// if the number of columns is inconsistent, then the layout is invalid
 						throw new Exception("Inconsistent number of columns in layout config found at row " + rowIndex + ".");
 					}
-					oldNumCols = numCols;
+					expectedNumCols = numCols;
 				} catch (Exception exception) {
 					throw new BadConfigFormatException(exception.getMessage());
 				}
