@@ -210,7 +210,7 @@ public class Board {
 					
 					// Even-indexed elements are row indices, odd-indexed elements are column indices
 					int[] flatAdjIndices = {rowIndex - 1, colIndex, rowIndex, colIndex + 1,
-											rowIndex + 1, colIndex, rowIndex, colIndex - 1};
+						rowIndex + 1, colIndex, rowIndex, colIndex - 1};
 					for (int index = 0; index < flatAdjIndices.length; index += 2) {
 						if (flatAdjIndices[index] < 0 || flatAdjIndices[index] >= numRows ||
 							flatAdjIndices[index + 1] < 0 || flatAdjIndices[index + 1] >= numCols) {
