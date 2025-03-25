@@ -204,12 +204,7 @@ public class Board {
 				BoardCell cell = getCell(rowIndex, colIndex);
 
 				if (cell.isSecretPassage()) {
-					BoardCell startingRoomCenter = getRoom(cell).getCenterCell();
-					BoardCell endingRoomCenter = getRoom(cell.getSecretPassage()).getCenterCell();
-					
-					// Secret passages mean we need to add the two room centers as adjacent to each other
-					startingRoomCenter.addAdj(endingRoomCenter);
-					endingRoomCenter.addAdj(startingRoomCenter);
+					handleSecretPassage(cell);
 				} else if (cell.isWalkway()) {
 					// Walkways are adjacent to walkways and doorway walkways
 
@@ -242,27 +237,40 @@ public class Board {
 					}
 
 					if (cell.isDoorway()) {
-						int doorwayRoomRowIndex = rowIndex;
-						int doorwayRoomColIndex = colIndex;
-						
-						switch (cell.getDoorDirection()) {
-							case DoorDirection.UP -> doorwayRoomRowIndex--;
-							case DoorDirection.RIGHT -> doorwayRoomColIndex++;
-							case DoorDirection.DOWN -> doorwayRoomRowIndex++;
-							case DoorDirection.LEFT -> doorwayRoomColIndex--;
-						}
-
-						BoardCell roomCenter = getRoom(getCell(doorwayRoomRowIndex, doorwayRoomColIndex)).getCenterCell();
-
-						// Doorway walkways are adjacent to corresponding room center and walkways
-						cell.addAdj(roomCenter);
-
-						// Room centers are adjacent to corresponding doorway walkways
-						roomCenter.addAdj(cell);
+						handleDoorway(cell);
 					}
 				}
 			}
 		}
+	}
+
+	private void handleSecretPassage(BoardCell cell) {
+		BoardCell startingRoomCenter = getRoom(cell).getCenterCell();
+		BoardCell endingRoomCenter = getRoom(cell.getSecretPassage()).getCenterCell();
+		
+		// Secret passages mean we need to add the two room centers as adjacent to each other
+		startingRoomCenter.addAdj(endingRoomCenter);
+		endingRoomCenter.addAdj(startingRoomCenter);
+	}
+
+	private void handleDoorway(BoardCell cell) {
+		int doorwayRoomRowIndex = cell.getRow();
+		int doorwayRoomColIndex = cell.getCol();
+		
+		switch (cell.getDoorDirection()) {
+			case DoorDirection.UP -> doorwayRoomRowIndex--;
+			case DoorDirection.RIGHT -> doorwayRoomColIndex++;
+			case DoorDirection.DOWN -> doorwayRoomRowIndex++;
+			case DoorDirection.LEFT -> doorwayRoomColIndex--;
+		}
+
+		BoardCell roomCenter = getRoom(getCell(doorwayRoomRowIndex, doorwayRoomColIndex)).getCenterCell();
+
+		// Doorway walkways are adjacent to corresponding room center and walkways
+		cell.addAdj(roomCenter);
+
+		// Room centers are adjacent to corresponding doorway walkways
+		roomCenter.addAdj(cell);
 	}
 
 	public void deal() {
