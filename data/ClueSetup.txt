@@ -11,3 +11,11 @@ Room, Honey Room, H
 // Other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// People cards
+Person, NAME1, Gold
+Person, NAME2, Blue
+Person, NAME3, Green
+Person, NAME4, Pink
+Person, NAME5, Teal
+Person, NAME6, Red
+// Weapon cards
