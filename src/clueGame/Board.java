@@ -28,6 +28,8 @@ import java.util.Set;
 public class Board {
 	private static final String ROOM_TYPE_LABEL = "Room";
 	private static final String SPACE_TYPE_LABEL = "Space";
+	private static final String PERSON_TYPE_LABEL = "Person";
+	private static final String WEAPON_TYPE_LABEL = "Weapon";
 
 	private static final String WALKWAY_LABEL = "Walkway";
 	private static final String UNUSED_LABEL = "Unused";
@@ -49,6 +51,10 @@ public class Board {
 
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
+	
+	private ArrayList<Player> players;
+	
+	private Card[] answerCards;
 
 	public Board() {
 		super();
@@ -66,6 +72,14 @@ public class Board {
 
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 		roomMap = new HashMap<>();
+		
+		ArrayList<Card> roomCards = new ArrayList<Card>();
+		ArrayList<Card> playerCards = new ArrayList<Card>();
+		ArrayList<Card> weaponCards = new ArrayList<Card>();
+		ArrayList<Card> cards = new ArrayList<Card>();
+		
+		players = new ArrayList<Player>();
+		answerCards = new Card[3];
 
 		File setupFile = new File(setupConfigFile);
 		try (Scanner scanner = new Scanner(setupFile)) {
@@ -77,27 +91,75 @@ public class Board {
 
 				try {
 					String[] markerInfo = line.split(", ");
-					String roomType = markerInfo[0];
-					String roomLabel = markerInfo[1];
-					char initial = markerInfo[2].charAt(0);
-
-					roomMap.put(initial, new Room(roomLabel));
-					switch (roomType) {
-						case ROOM_TYPE_LABEL -> {}
+					String infoType = markerInfo[0];
+					switch (infoType) {
+						case ROOM_TYPE_LABEL -> {
+							String roomLabel = markerInfo[1];
+							Card card = new Card(roomLabel, CardType.ROOM);
+							roomCards.add(card);
+							cards.add(card);
+						
+							char initial = markerInfo[2].charAt(0);
+							roomMap.put(initial, new Room(roomLabel));
+						}
 						case SPACE_TYPE_LABEL -> {
+							String roomLabel = markerInfo[1];
+							char initial = markerInfo[2].charAt(0);
 							if (roomLabel.equals(WALKWAY_LABEL)) {
 								walkwayInitial = initial;
 							} else if (roomLabel.equals(UNUSED_LABEL)) {
 								unusedInitial = initial;
 							}
+							roomMap.put(initial, new Room(roomLabel));
 						}
-						default -> throw new Exception("Invalid room type \"" + roomType + "\" in setup config.");
+						case PERSON_TYPE_LABEL -> {
+							Card card = new Card(markerInfo[1], CardType.PERSON);
+							playerCards.add(card);
+							cards.add(card);
+							
+							Player player;
+							if (players.size() == 0) {
+								player = new HumanPlayer(markerInfo[1], markerInfo[2], Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4]));
+							} else {
+								player = new ComputerPlayer(markerInfo[1], markerInfo[2], Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4]));
+							}
+							players.add(player);
+							
+						}
+						case WEAPON_TYPE_LABEL -> {
+							Card card = new Card(markerInfo[1], CardType.WEAPON);
+							weaponCards.add(card);
+							cards.add(card);
+							
+						}
+						default -> throw new Exception("Invalid type \"" + markerInfo[1] + "\" in setup config.");
 					}
+					
 				} catch (Exception exception) {
 					scanner.close();
 					throw new BadConfigFormatException(exception.getMessage());
 				}
 			}
+			
+			Card randomCard = roomCards.get((int)Math.random() * roomCards.size());
+			answerCards[0] = randomCard;
+			cards.remove(randomCard);
+			
+			randomCard = playerCards.get((int)Math.random() * playerCards.size());
+			answerCards[1] = randomCard;
+			cards.remove(randomCard);
+			
+			randomCard = weaponCards.get((int)Math.random() * weaponCards.size());
+			answerCards[2] = randomCard;
+			cards.remove(randomCard);
+			
+			int deckSize = cards.size();
+			for(int index = 0; index < deckSize; ++index) {
+				randomCard = cards.get((int)Math.random() * cards.size());
+				players.get(index % players.size()).updateHand(randomCard);
+				cards.remove(randomCard);
+			}
+			
 		}
 	}
 
@@ -245,10 +307,10 @@ public class Board {
 		int doorwayRoomColIndex = cell.getCol();
 		
 		switch (cell.getDoorDirection()) {
-			case DoorDirection.UP -> doorwayRoomRowIndex--;
-			case DoorDirection.RIGHT -> doorwayRoomColIndex++;
-			case DoorDirection.DOWN -> doorwayRoomRowIndex++;
-			case DoorDirection.LEFT -> doorwayRoomColIndex--;
+			case UP -> doorwayRoomRowIndex--;
+			case RIGHT -> doorwayRoomColIndex++;
+			case DOWN -> doorwayRoomRowIndex++;
+			case LEFT -> doorwayRoomColIndex--;
 		}
 
 		BoardCell roomCenter = getRoom(getCell(doorwayRoomRowIndex, doorwayRoomColIndex)).getCenterCell();
@@ -338,5 +400,13 @@ public class Board {
 
 	public Set<BoardCell> getTargets() {
 		return targets;
+	}
+
+	public Card[] getAnswers() {
+		return answerCards;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 }
