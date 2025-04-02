@@ -11,3 +11,17 @@ Room, Hall, H
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// People cards
+Person, Miss Scarlet, Red, 0, 15
+Person, Colonel Mustard, Gold, 6, 22
+Person, Mrs. Peacock, Blue, 0, 18
+Person, Mrs. White, Teal, 24, 13
+Person, Professor Plum, Pink, 0, 5
+Person, Reverend Green, Green, 24, 8
+// Weapon cards
+Weapon, Candlestick
+Weapon, Dagger
+Weapon, Lead Pipe
+Weapon, Revolver
+Weapon, Rope
+Weapon, Wrench

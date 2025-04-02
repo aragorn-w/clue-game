@@ -12,10 +12,16 @@ Room, Honey Room, H
 Space, Unused, X
 Space, Walkway, W
 // People cards
-Person, NAME1, Gold
-Person, NAME2, Blue
-Person, NAME3, Green
-Person, NAME4, Pink
-Person, NAME5, Teal
-Person, NAME6, Red
+Person, Hans Wolfeschlegelsteinhausenbergerdorff, Gold, 0, 7
+Person, Rick Roelle, Blue, 0, 13
+Person, Juan, Green, 0, 20
+Person, Jiu Shiyi, Pink, 19, 20
+Person, May O'Neill, Teal, 10, 6
+Person, Ivan Ivanov, Red, 0, 29
 // Weapon cards
+Weapon, Lead Pipe
+Weapon, Steel Pipe
+Weapon, Copper Pipe
+Weapon, PVC Pipe
+Weapon, Sodium Pipe
+Weapon, Pipe Wrench
