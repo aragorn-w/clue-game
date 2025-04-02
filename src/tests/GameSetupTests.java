@@ -26,10 +26,9 @@ import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
 import clueGame.Player;
+import clueGame.Solution;
 import clueGame.HumanPlayer;
 import clueGame.ComputerPlayer;
-
-import clueGame.Card;
 import clueGame.CardType;
 
 public class GameSetupTests {
@@ -83,19 +82,14 @@ public class GameSetupTests {
 		}
 		// - 3 to account for answer cards
 		assertEquals(NUM_CARDS - 3, cardSum);
-		
 	}
 	
-	
-	@Test 
+	@Test
 	public void testAnswerDeals() {
-		Card[] answers = board.getAnswers();
-		// make sure length is correct
-		assertEquals(3, answers.length);
+		Solution solution = board.getSolution();
 		// ensure card types are correct 
-		assertEquals(CardType.ROOM, answers[0].getType());
-		assertEquals(CardType.PERSON, answers[1].getType());
-		assertEquals(CardType.WEAPON, answers[2].getType());
+		assertEquals(CardType.ROOM, solution.getRoomCard().getType());
+		assertEquals(CardType.PERSON, solution.getPersonCard().getType());
+		assertEquals(CardType.WEAPON, solution.getWeaponCard().getType());
 	}
-	
 }
