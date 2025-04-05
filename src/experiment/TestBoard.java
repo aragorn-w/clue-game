@@ -1,24 +1,31 @@
 /*
- * Authors: Aragorn Wang, Anya Streit
- *
  * Class: TestBoard
  *
  * Purpose: This class is used to create a board for the game. It is used to calculate the targets for the player to move to.
  *
  * Responsibilites: TestBoard is responsible for creating the board, noting each cell's adjacency list, and calculating the targets for the player to move to.
+ * 
+ * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: April 5, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
  */
 
  package experiment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class TestBoard {
 	public final static int NUM_ROWS = 4;
 	public final static int NUM_COLS = 4;
 
-	private final ArrayList<ArrayList<TestBoardCell>> grid;
+	private final List<List<TestBoardCell>> grid;
 
 	private Set<TestBoardCell> targets;
 
@@ -30,7 +37,7 @@ public class TestBoard {
 		grid = new ArrayList<>();
 
 	    for (int row = 0; row < NUM_ROWS; row++) {
-	        ArrayList<TestBoardCell> gridRow = new ArrayList<>();
+	        List<TestBoardCell> gridRow = new ArrayList<>();
 	        for (int col = 0; col < NUM_COLS; col++) {
 	            gridRow.add(new TestBoardCell(row, col));  // Assuming TestBoardCell has a constructor
 	        }

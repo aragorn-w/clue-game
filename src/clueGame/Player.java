@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 2, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -17,34 +17,88 @@
 package clueGame;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.awt.Color;
 
 public abstract class Player {
+	private static final Color
+		GOLD = new Color(184, 143, 64),
+		BLUE = new Color(103, 121, 191),
+		GREEN = new Color(112, 168, 69),
+		PINK = new Color(195, 92, 164),
+		TEAL = new Color(137, 224, 2),
+		RED = new Color(203, 88, 76);
+
 	private String name;
 	private Color color;
 
 	private int row;
 	private int column;
 
-	private ArrayList<Card> cards;
+	private Set<Card> hand;
+	private Set<Card> seenCards;
 	
 	public Player(String name, String color, int row, int column) {
-		cards = new ArrayList<Card>();
+		super();
+		this.hand = new HashSet<Card>();
+		this.seenCards = new HashSet<>();
 		this.name = name;
 		this.row = row;
 		this.column = column;
 		switch(color) {
-			case "Gold" -> this.color = new Color(184,143,64);
-			case "Blue" -> this.color = new Color(103,121,191);
-			case "Green" -> this.color = new Color(112,168,69);
-			case "Pink" -> this.color = new Color(195,92,164);
-			case "Teal" -> this.color = new Color(137,224,2);
-			case "Red" -> this.color = new Color(203,88,76);
+			case "Gold" -> this.color = GOLD;
+			case "Blue" -> this.color = BLUE;
+			case "Green" -> this.color = GREEN;
+			case "Pink" -> this.color = PINK;
+			case "Teal" -> this.color = TEAL;
+			case "Red" -> this.color = RED;
 		}
 	}
 
-	public void updateHand(Card card) {
-		cards.add(card);
+	public boolean updateHand(Card card) {
+		seenCards.add(card);
+		return hand.add(card);
+	}
+
+	public boolean removeFromHand(Card card) {
+		return hand.remove(card);
+	}
+
+	public boolean updateSeen(Card seenCard) {
+		return seenCards.add(seenCard);
+	}
+
+	public boolean removeFromSeen(Card card) {
+		return seenCards.remove(card);
+	}
+
+	public Card disproveSuggestion(Solution suggestion) {
+		Set<Card> matchingCards = new HashSet<>(hand);
+		matchingCards.retainAll(suggestion.getCardSet());
+		List<Card> matchingCardsList = new ArrayList<>(matchingCards);
+		if (!matchingCardsList.isEmpty()) {
+			return matchingCardsList.get((int) (Math.random() * matchingCardsList.size()));
+		}
+		return null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Player)) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		Player otherPlayer = (Player) obj;
+		return name.equals(otherPlayer.name);
+	}
+
+	@Override
+	public String toString() {
+		return name + " " + color + " " + row + " " + column;
 	}
 
 	public String getName() {
@@ -59,11 +113,29 @@ public abstract class Player {
 		return row;
 	}
 	
-	public int getCol() {
+	public int getColumn() {
 		return column;
-	}	
+	}
 	
-	public ArrayList<Card> getCards() {
-		return cards;
+	public Set<Card> getHand() {
+		return hand;
+	}
+
+	public Card getAnyHandCard() {
+		if (hand.isEmpty()) {
+			return null;
+		}
+		return hand.iterator().next();
+	}
+
+	public Set<Card> getSeenCards() {
+		return seenCards;
+	}
+
+	public Card getAnySeenCard() {
+		if (seenCards.isEmpty()) {
+			return null;
+		}
+		return seenCards.iterator().next();
 	}
 }

@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: March 25, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -18,7 +18,9 @@ package tests;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -64,7 +66,6 @@ public class BoardAdjTargetTest {
 		// door from room
 		assertTrue(testList.contains(board.getCell(17, 24)));
 	}
-
 
 	// Test door locations include room location and walkways
 	// These cells are dark orange on the planning spreadsheet
@@ -125,7 +126,6 @@ public class BoardAdjTargetTest {
 		assertTrue(testList.contains(board.getCell(8, 10)));
 		assertTrue(testList.contains(board.getCell(10, 10)));
 		assertTrue(testList.contains(board.getCell(9, 9)));
-
 	}
 
 	// test coming out of room with varying roll amounts
@@ -156,7 +156,6 @@ public class BoardAdjTargetTest {
 		assertTrue(targets.contains(board.getCell(9, 22)));
 		assertTrue(targets.contains(board.getCell(10, 23)));
 		assertTrue(targets.contains(board.getCell(11, 24)));
-
 	}
 
 	// test room with multiple doors
@@ -275,7 +274,6 @@ public class BoardAdjTargetTest {
 		assertTrue(targets.contains(board.getCell(7, 6)));
 		assertTrue(targets.contains(board.getCell(8, 5)));
 		assertTrue(targets.contains(board.getCell(8, 3)));
-
 	}
 
 	// test walkway target when
@@ -314,6 +312,5 @@ public class BoardAdjTargetTest {
 		board.getCell(17, 10).setOccupied(false);
 		targets = board.getTargets();
 		assertEquals(0, targets.size());
-
 	}
 }

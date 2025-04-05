@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: March 25, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -17,13 +17,13 @@
 package clueGame;
 
 public class BadConfigFormatException extends Exception {
-    private static final long serialVersionUID = -8436274110449011956L;
+	private static final long serialVersionUID = -8436274110449011956L;
 
 	public BadConfigFormatException() {
-        super("Either the setup or layout config file is invalid.");
-    }
+		super("Either the setup or layout config file is invalid.");
+	}
 
-    public BadConfigFormatException(String message) {
-        super(message);
-    }
+	public BadConfigFormatException(String message) {
+		super(message);
+	}
 }

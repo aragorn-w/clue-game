@@ -1,3 +1,19 @@
+/*
+ * Class: ExceptionTests306
+ *
+ * Purpose: This class tests that exceptions are thrown appropriately when loading config files.
+ *
+ * Responsibilites: ExceptionTests tests that exceptions are thrown when loading config files that are not formatted correctly by asserting that the number of columns in the layout file is consistent, that the room specified in the layout file is in the legend, and that the setup file is formatted correctly.
+ *
+ * Authors: Spring 2025 CSCI 306 Staff
+ * 
+ * Date Last Edited: April 5, 2025
+ * 
+ * Collaborators: Aragorn Wang, Anya Streit
+ * 
+ * Sources: None
+ */
+
 package tests;
 
 /*
@@ -15,7 +31,6 @@ import clueGame.BadConfigFormatException;
 import clueGame.Board;
 
 public class ExceptionTests306 {
-
 	// Test that an exception is thrown for a layout file that does not
 	// have the same number of columns for each row
 	@Test
@@ -55,5 +70,4 @@ public class ExceptionTests306 {
 			board.loadLayoutConfig();
 		});
 	}
-
 }

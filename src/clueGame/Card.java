@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 2, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -17,21 +17,34 @@
 package clueGame;
 
 public class Card {
-	private String cardName;
+	private String name;
 	private CardType type;
 
 	public Card(String cardName, CardType type) {
 		super();
-		this.cardName = cardName;
+		this.name = cardName;
 		this.type = type;
 	}
 	
-	public boolean equals(Card target) {
-		return target.cardName.equals(cardName);
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Card)) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		Card card = (Card) obj;
+		return card.name.equals(name) && card.type == type;
+	}
+
+	@Override
+	public String toString() {
+		return name + " " + type;
 	}
 
 	public String getName() {
-		return cardName;
+		return name;
 	}
 	
 	public CardType getType() {

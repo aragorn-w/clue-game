@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: March 25, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -70,5 +70,4 @@ public class ExceptionTests {
 			board.loadLayoutConfig();
 		});
 	}
-
 }

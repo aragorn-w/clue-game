@@ -1,3 +1,19 @@
+/*
+ * Class: BoardAdjTargetTest306
+ *
+ * Purpose: Tests adjacency lists and target lists from the actual game board
+ *
+ * Responsibilities: Inits board from data files, and sets up board to test various edge cases then resets board to inital state
+ *
+ * Authors: Spring 2025 CSCI 306 Staff
+ * 
+ * Date Last Edited: April 5, 2025
+ * 
+ * Collaborators: Aragorn Wang, Anya Streit
+ * 
+ * Sources: None
+ */
+
 package tests;
 
 import java.util.Set;
@@ -49,7 +65,6 @@ public class BoardAdjTargetTest306 {
 		assertTrue(testList.contains(board.getCell(17, 18)));
 		assertTrue(testList.contains(board.getCell(2, 2)));
 	}
-
 
 	// Ensure door locations include their rooms and also additional walkways
 	// These cells are LIGHT ORANGE on the planning spreadsheet
@@ -104,9 +119,7 @@ public class BoardAdjTargetTest306 {
 		assertTrue(testList.contains(board.getCell(9, 15)));
 		assertTrue(testList.contains(board.getCell(8, 14)));
 		assertTrue(testList.contains(board.getCell(10, 14)));
-
 	}
-
 
 	// Tests out of room center, 1, 3 and 4
 	// These are LIGHT BLUE on the planning spreadsheet
@@ -263,8 +276,8 @@ public class BoardAdjTargetTest306 {
 		assertTrue(targets.contains(board.getCell(14, 2)));
 		assertTrue(targets.contains(board.getCell(15, 9)));
 		assertTrue(targets.contains(board.getCell(11, 5)));
-		assertFalse( targets.contains( board.getCell(15, 7))) ;
-		assertFalse( targets.contains( board.getCell(17, 7))) ;
+		assertFalse(targets.contains(board.getCell(15, 7)));
+		assertFalse(targets.contains(board.getCell(17, 7)));
 
 		// we want to make sure we can get into a room, even if flagged as occupied
 		board.getCell(12, 20).setOccupied(true);
@@ -287,6 +300,5 @@ public class BoardAdjTargetTest306 {
 		assertTrue(targets.contains(board.getCell(6, 17)));
 		assertTrue(targets.contains(board.getCell(8, 19)));
 		assertTrue(targets.contains(board.getCell(8, 15)));
-
 	}
 }

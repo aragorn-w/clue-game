@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 1, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -16,6 +16,9 @@
 
 package clueGame;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Solution {
 	private Card roomCard;
 	private Card personCard;
@@ -23,6 +26,39 @@ public class Solution {
 
 	public Solution() {
 		super();
+	}
+
+	public Solution(Card roomCard, Card personCard, Card weaponCard) {
+		super();
+		this.roomCard = roomCard;
+		this.personCard = personCard;
+		this.weaponCard = weaponCard;
+	}
+
+	public Solution(Solution solution) {
+		super();
+		this.roomCard = solution.roomCard;
+		this.personCard = solution.personCard;
+		this.weaponCard = solution.weaponCard;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Solution)) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		Solution other = (Solution) obj;
+		return roomCard.equals(other.roomCard)
+			&& personCard.equals(other.personCard)
+			&& weaponCard.equals(other.weaponCard);
+	}
+
+	@Override
+	public String toString() {
+		return "SOLUTION: " + roomCard + ", " + personCard + ", " + weaponCard;
 	}
 
 	public Card getRoomCard() {
@@ -47,5 +83,22 @@ public class Solution {
 
 	public void setWeaponCard(Card weaponCard) {
 		this.weaponCard = weaponCard;
+	}
+
+	public Set<Card> getCardSet() {
+		Set<Card> cardList = new HashSet<>();
+		cardList.add(roomCard);
+		cardList.add(personCard);
+		cardList.add(weaponCard);
+		return cardList;
+	}
+
+	public void setAnyCard(Card card) {
+		switch (card.getType()) {
+			case ROOM -> setRoomCard(card);
+			case PERSON -> setPersonCard(card);
+			case WEAPON -> setWeaponCard(card);
+			default -> throw new IllegalArgumentException("Invalid card type");
+		}
 	}
 }

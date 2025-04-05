@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: March 25, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -19,8 +19,10 @@ package clueGame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -42,7 +44,7 @@ public class Board {
 	private int numRows;
 	private int numCols;
 
-	private ArrayList<ArrayList<BoardCell>> grid;
+	private List<List<BoardCell>> grid;
 
 	private String layoutConfigFile;
 	private String setupConfigFile;
@@ -51,10 +53,14 @@ public class Board {
 
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
-	
-	private ArrayList<Player> players;
 
-	private Solution solution;
+	private List<Player> players;
+
+	private Player humanPlayer;
+
+	private List<Card> nonAnswerCards;
+
+	private Solution theAnswer;
 
 	public Board() {
 		super();
@@ -73,13 +79,13 @@ public class Board {
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 		roomMap = new HashMap<>();
 		
-		ArrayList<Card> roomCards = new ArrayList<>();
-		ArrayList<Card> playerCards = new ArrayList<>();
-		ArrayList<Card> weaponCards = new ArrayList<>();
-		ArrayList<Card> cards = new ArrayList<>();
+		List<Card> roomCards = new ArrayList<>();
+		List<Card> playerCards = new ArrayList<>();
+		List<Card> weaponCards = new ArrayList<>();
 		
 		players = new ArrayList<>();
-		solution = new Solution();
+		nonAnswerCards = new ArrayList<>();
+		theAnswer = new Solution();
 
 		File setupFile = new File(setupConfigFile);
 		try (Scanner scanner = new Scanner(setupFile)) {
@@ -97,7 +103,7 @@ public class Board {
 							String roomLabel = markerInfo[1];
 							Card card = new Card(roomLabel, CardType.ROOM);
 							roomCards.add(card);
-							cards.add(card);
+							nonAnswerCards.add(card);
 							
 							char initial = markerInfo[2].charAt(0);
 							roomMap.put(initial, new Room(roomLabel));
@@ -115,11 +121,12 @@ public class Board {
 						case PERSON_TYPE_LABEL -> {
 							Card card = new Card(markerInfo[1], CardType.PERSON);
 							playerCards.add(card);
-							cards.add(card);
+							nonAnswerCards.add(card);
 							
 							Player player;
 							if (players.isEmpty()) {
 								player = new HumanPlayer(markerInfo[1], markerInfo[2], Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4]));
+								humanPlayer = player;
 							} else {
 								player = new ComputerPlayer(markerInfo[1], markerInfo[2], Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4]));
 							}
@@ -128,7 +135,7 @@ public class Board {
 						case WEAPON_TYPE_LABEL -> {
 							Card card = new Card(markerInfo[1], CardType.WEAPON);
 							weaponCards.add(card);
-							cards.add(card);
+							nonAnswerCards.add(card);
 						}
 						default -> throw new Exception("Invalid type \"" + markerInfo[1] + "\" in setup config.");
 					}
@@ -138,24 +145,17 @@ public class Board {
 				}
 			}
 			
-			Card randomCard = roomCards.get((int)Math.random() * roomCards.size());
-			solution.setRoomCard(randomCard);
-			cards.remove(randomCard);
+			Card randomCard = roomCards.get((int) Math.random() * roomCards.size());
+			theAnswer.setRoomCard(randomCard);
+			nonAnswerCards.remove(randomCard);
 			
-			randomCard = playerCards.get((int)Math.random() * playerCards.size());
-			solution.setPersonCard(randomCard);
-			cards.remove(randomCard);
+			randomCard = playerCards.get((int) Math.random() * playerCards.size());
+			theAnswer.setPersonCard(randomCard);
+			nonAnswerCards.remove(randomCard);
 			
-			randomCard = weaponCards.get((int)Math.random() * weaponCards.size());
-			solution.setWeaponCard(randomCard);
-			cards.remove(randomCard);
-			
-			int deckSize = cards.size();
-			for (int index = 0; index < deckSize; index++) {
-				randomCard = cards.get((int)Math.random() * cards.size());
-				players.get(index % players.size()).updateHand(randomCard);
-				cards.remove(randomCard);
-			}
+			randomCard = weaponCards.get((int) Math.random() * weaponCards.size());
+			theAnswer.setWeaponCard(randomCard);
+			nonAnswerCards.remove(randomCard);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class Board {
 				String[] line = scanner.nextLine().split(",");
 				numCols = line.length;
 
-				ArrayList<BoardCell> row = new ArrayList<>();
+				List<BoardCell> row = new ArrayList<>();
 
 				try {
 					int colIndex = 0;
@@ -318,8 +318,44 @@ public class Board {
 		roomCenter.addAdj(cell);
 	}
 
-	public void deal() {
-		
+	public void dealCards() {
+		Collections.shuffle(nonAnswerCards);
+		int playerIdx = 0;
+		for (Card card: nonAnswerCards) {
+			players.get(playerIdx % players.size()).updateHand(card);
+			playerIdx = (playerIdx + 1) % players.size();
+		}
+	}
+
+	public boolean checkAccusation(Solution proposedAnswer) {
+		return proposedAnswer.equals(theAnswer);
+	}
+
+	public Card handleSuggestion(Player player, Solution proposedAnswer) {
+		// Find player list index of player after the one making the suggestion
+		int nextPlayerIdx = 0;
+		for (Player otherPlayer: players) {
+			if (otherPlayer.equals(player)) {
+				nextPlayerIdx = (nextPlayerIdx + 1) % players.size();
+				break;
+			}
+			nextPlayerIdx = (nextPlayerIdx + 1) % players.size();
+		}
+
+		// Return first encountered disproving card if any player can disprove the suggestion
+		int playersProcessed = 0;
+		int playerIdx = nextPlayerIdx;
+		while (playersProcessed < players.size() - 1) {
+			Card disprovingCard = players.get(playerIdx).disproveSuggestion(proposedAnswer);
+			if (disprovingCard != null) {
+				return disprovingCard;
+			}
+			playerIdx = (playerIdx + 1) % players.size();
+			playersProcessed++;
+		}
+
+		// Null means no other player could disprove the suggestion
+		return null;
 	}
 
 	public static Board getInstance() {
@@ -349,6 +385,10 @@ public class Board {
 		return getRoom(cell.getInitial());
 	}
 
+	public Card getRoomCard(BoardCell cell) {
+		return new Card(getRoom(cell).getName(), CardType.ROOM);
+	}
+
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
 		this.layoutConfigFile = layoutConfigFile;
 		this.setupConfigFile = setupConfigFile;
@@ -358,16 +398,16 @@ public class Board {
 		return getCell(row, col).getAdjList();
 	}
 
-	public void calcTargets(BoardCell cell, int roll) {
+	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited = new HashSet<>();
 		targets = new HashSet<>();
-		findAllTargets(cell, roll);
+		findAllTargets(startCell, pathLength);
 	}
 
-	private void findAllTargets(BoardCell cell, int roll) {
-		visited.add(cell);
+	private void findAllTargets(BoardCell startCell, int pathLength) {
+		visited.add(startCell);
 
-		for (BoardCell adjCell: cell.getAdjList()) {
+		for (BoardCell adjCell: startCell.getAdjList()) {
 			if (visited.contains(adjCell)) {
 				continue;
 			}
@@ -375,14 +415,14 @@ public class Board {
 			visited.add(adjCell);
 
 			if (!adjCell.isOccupied()) {
-				if (roll == 1 || adjCell.isRoomCenter()) {
+				if (pathLength == 1 || adjCell.isRoomCenter()) {
 					targets.add(adjCell);
 				} else {
 					if (adjCell.isRoom()) {
 						targets.add(adjCell);
 					}
 
-					findAllTargets(adjCell, roll - 1);
+					findAllTargets(adjCell, pathLength - 1);
 				}
 			} else if (adjCell.isRoomCenter()) {
 				targets.add(adjCell);
@@ -391,18 +431,36 @@ public class Board {
 			visited.remove(adjCell);
 		}
 
-		visited.remove(cell);
+		visited.remove(startCell);
 	}
 
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
 
-	public Solution getSolution() {
-		return solution;
+	public List<Player> getPlayers() {
+		return players;
 	}
 
-	public ArrayList<Player> getPlayers() {
-		return players;
+	public Player getHumanPlayer() {
+		return humanPlayer;
+	}
+
+	public List<Card> getNonAnswerCards() {
+		return nonAnswerCards;
+	}
+
+	public Solution getTheAnswer() {
+		return theAnswer;
+	}
+
+	public void setTheAnswer(Solution theAnswer) {
+		this.theAnswer = theAnswer;
+	}
+
+	public List<Card> getTotalDeck() {
+		List<Card> deck = new ArrayList<>(nonAnswerCards);
+		deck.addAll(theAnswer.getCardSet());
+		return deck;
 	}
 }

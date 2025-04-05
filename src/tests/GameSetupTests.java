@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 1, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -16,10 +16,10 @@
 
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,28 +35,32 @@ public class GameSetupTests {
 	// Same constants as before
 	public static final int NUM_ROWS = 20;
 	public static final int NUM_COLUMNS = 30;
-	public static final int NUM_CARDS = 21;
+
+	public static final int ANSWER_SIZE = 3;
+	public static final int DECK_SIZE = 21;
+
+	public static final int NUM_PLAYERS = 6;
+	public static final int NUM_WEAPONS = 6;
+	public static final int NUM_ROOMS = 9;
 
 	private static Board board;
-	
-	private static ArrayList<Player> players;
-	
+		
 	// Same setUp as FileInitTests
 	@BeforeAll
 	public static void setUp() {
 		board = Board.getInstance();
 		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
 		board.initialize();
-		players = board.getPlayers();
+		board.dealCards();
 	}
 	
 	@Test
 	public void testPlayers() {
 		// Make sure players ArrayList size is correct
-		assertEquals(6, players.size());
+		assertEquals(NUM_PLAYERS, board.getPlayers().size());
 		
-		Player human = players.get(0);
-		Player computer = players.get(1);
+		Player human = board.getPlayers().get(0);
+		Player computer = board.getPlayers().get(1);
 		
 		// Test name + colors assignment
 		assertEquals("Hans Wolfeschlegelsteinhausenbergerdorff", human.getName());
@@ -65,7 +69,7 @@ public class GameSetupTests {
 		
 		// Test start location
 		assertEquals(0, human.getRow());
-		assertEquals(7, human.getCol());
+		assertEquals(7, human.getColumn());
 		
 		// Test type of players
 		assertTrue(human instanceof HumanPlayer);
@@ -75,19 +79,21 @@ public class GameSetupTests {
 	@Test
 	public void testPlayerCards() {
 		// Ensure player card count is in the expected range and make sure all cards were dealt properly
-		int cardSum = 0;
-		for (Player player : players) {
-			assertTrue(player.getCards().size() > 2 && player.getCards().size() < 5);
-			cardSum += player.getCards().size();
+		int numCardsDealt = 0;
+		int minHandSize = (int) Math.floor((DECK_SIZE - ANSWER_SIZE) / NUM_PLAYERS);
+		int maxHandSize = (int) Math.ceil((DECK_SIZE - ANSWER_SIZE) / NUM_PLAYERS);
+		for (Player player : board.getPlayers()) {
+			assertTrue(player.getHand().size() >= minHandSize && player.getHand().size() <= maxHandSize);
+			numCardsDealt += player.getHand().size();
 		}
-		// - 3 to account for answer cards
-		assertEquals(NUM_CARDS - 3, cardSum);
+
+		assertEquals(DECK_SIZE - ANSWER_SIZE, numCardsDealt);
 	}
 	
 	@Test
 	public void testAnswerDeals() {
-		Solution solution = board.getSolution();
-		// ensure card types are correct 
+		Solution solution = board.getTheAnswer();
+		// Ensure card types are correct 
 		assertEquals(CardType.ROOM, solution.getRoomCard().getType());
 		assertEquals(CardType.PERSON, solution.getPersonCard().getType());
 		assertEquals(CardType.WEAPON, solution.getWeaponCard().getType());

@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 2, 2025
+ * Date Last Edited: April 5, 2025
  * 
  * Collaborators: None
  * 
@@ -20,5 +20,4 @@ public class HumanPlayer extends Player {
 	public HumanPlayer(String name, String color, int row, int column) {
 		super(name, color, row, column);
 	}
-	
 }
