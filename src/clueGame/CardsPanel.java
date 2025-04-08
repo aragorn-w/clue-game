@@ -1,3 +1,19 @@
+/*
+ * Class: CardsPanel
+ *
+ * Purpose: The CardsPanel class' purpose is to create a panel that displays the cards that the player has seen and the cards that are in their hand. The CardsPanel class is responsible for creating the layout of the panel, adding the cards to the panel, and updating the panel when new cards are seen.
+ *
+ * Responsibilities: The CardsPanel class is responsible for creating the layout of the panel, adding the cards to the panel, and updating the panel when new cards are seen. It also provides methods to add new cards to the panel and update the display of the cards.
+ *
+ * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: April 8, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
+ */
+
 package clueGame;
 
 import java.awt.Color;

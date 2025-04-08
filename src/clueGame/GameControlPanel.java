@@ -1,3 +1,19 @@
+/*
+ * Class: GameControlPanel
+ *
+ * Purpose: The GameControlPanel class' purpose is to create a panel that displays the current player's turn, the roll of the dice, the current guess, and the result of the guess. The GameControlPanel class is responsible for creating the layout of the panel, adding the components to the panel, and updating the panel when new information is available.
+ *
+ * Responsibilities: The GameControlPanel class is responsible for creating the layout of the panel, adding the components to the panel, and updating the panel when new information is available. It also provides methods to set the text of the various components in the panel.
+ *
+ * Authors: Aragorn Wang, Anya Streit
+ * 
+ * Date Last Edited: April 8, 2025
+ * 
+ * Collaborators: None
+ * 
+ * Sources: None
+ */
+
 package clueGame;
 
 import java.awt.Color;
