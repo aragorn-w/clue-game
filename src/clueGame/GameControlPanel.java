@@ -103,12 +103,9 @@ public class GameControlPanel extends JPanel {
 		frame.setContentPane(panel);
 		frame.setVisible(true);
 
+		// Test setters for panel
 		panel.setTurnText(new ComputerPlayer("Fanny Wanter", "Gold", 0, 7), 10);
 		panel.setGuessText("I have no guess!");
 		panel.setGuessResultText("So you have nothing?");
-
-		// panel.setTurn(new ComputerPlayer("Fanny Wanter", "Gold", 0, 7));
-		// panel.setGuess("I have no guess!");
-		// panel.setGuessResult("So you have nothing?");
 	}
 }
