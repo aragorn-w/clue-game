@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ComputerPlayer extends Player {	
+public class ComputerPlayer extends Player {
 	public ComputerPlayer(String name, String color, int row, int column) {
 		super(name, color, row, column);
 	}

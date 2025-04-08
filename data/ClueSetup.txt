@@ -12,7 +12,7 @@ Room, Honey Room, H
 Space, Unused, X
 Space, Walkway, W
 // People cards
-Person, Hans Wolfeschlegelsteinhausenbergerdorff, Gold, 0, 7
+Person, Fanny Wanter, Gold, 0, 7
 Person, Rick Roelle, Blue, 0, 13
 Person, Juan, Green, 0, 20
 Person, Jiu Shiyi, Pink, 19, 20
