@@ -48,17 +48,15 @@ public class GameControlPanel extends JPanel {
 		turnAndActionPanel.add(nextTurnButton);
 
 		// Top row panel's leftmost component's components
-		JLabel playerTurnLabel = new JLabel("Whose turn?");
+		playerTurnPanel.add(new JLabel("Whose turn?"));
 		playerTurnText = new JTextField(20);
 		playerTurnText.setEditable(false);
-		playerTurnPanel.add(playerTurnLabel);
 		playerTurnPanel.add(playerTurnText);
 
 		// Top row panel's 2nd leftmost component's components
-		JLabel rollLabel = new JLabel("Roll:");
+		rollPanel.add(new JLabel("Roll:"));
 		rollText = new JTextField(10);
 		rollText.setEditable(false);
-		rollPanel.add(rollLabel);
 		rollPanel.add(rollText);
 
 		// Bottom row panel's components
@@ -99,13 +97,13 @@ public class GameControlPanel extends JPanel {
 		JFrame frame = new JFrame();
 		frame.setSize(750, 180);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GameControlPanel panel = new GameControlPanel();
-		frame.setContentPane(panel);
+		GameControlPanel gameControlPanel = new GameControlPanel();
+		frame.setContentPane(gameControlPanel);
 		frame.setVisible(true);
 
 		// Test setters for panel
-		panel.setTurnText(new ComputerPlayer("Fanny Wanter", "Gold", 0, 7), 10);
-		panel.setGuessText("I have no guess!");
-		panel.setGuessResultText("So you have nothing?");
+		gameControlPanel.setTurnText(new ComputerPlayer("Fanny Wanter", "Gold", 0, 7), 10);
+		gameControlPanel.setGuessText("I have no guess!");
+		gameControlPanel.setGuessResultText("So you have nothing?");
 	}
 }
