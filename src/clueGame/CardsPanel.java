@@ -28,9 +28,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class CardsPanel extends JPanel {
-	private JPanel seenPeopleCardsPanel;
-	private JPanel seenRoomCardsPanel;
-	private JPanel seenWeaponCardsPanel;
+	private JPanel
+		seenPeopleCardsPanel,
+		seenRoomCardsPanel,
+		seenWeaponCardsPanel;
 	
 	public CardsPanel() {
 		super();

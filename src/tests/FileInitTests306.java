@@ -113,7 +113,7 @@ public class FileInitTests306 {
 		Room room = board.getRoom(cell);
 		assertTrue(room != null);
 		assertEquals(room.getName(), "Kitchen");
-		assertFalse(cell.isLabel());
+		assertFalse(cell.isRoomLabel());
 		assertFalse(cell.isRoomCenter());
 		assertFalse(cell.isDoorway());
 
@@ -122,7 +122,7 @@ public class FileInitTests306 {
 		room = board.getRoom(cell);
 		assertTrue(room != null);
 		assertEquals(room.getName(), "Lounge");
-		assertTrue(cell.isLabel());
+		assertTrue(cell.isRoomLabel());
 		assertTrue(room.getLabelCell() == cell);
 
 		// this is a room center cell to test
@@ -147,7 +147,7 @@ public class FileInitTests306 {
 		assertTrue(room != null);
 		assertEquals(room.getName(), "Walkway");
 		assertFalse(cell.isRoomCenter());
-		assertFalse(cell.isLabel());
+		assertFalse(cell.isRoomLabel());
 
 		// test a closet
 		cell = board.getCell(24, 18);
@@ -155,6 +155,6 @@ public class FileInitTests306 {
 		assertTrue(room != null);
 		assertEquals(room.getName(), "Unused");
 		assertFalse(cell.isRoomCenter());
-		assertFalse(cell.isLabel());
+		assertFalse(cell.isRoomLabel());
 	}
 }

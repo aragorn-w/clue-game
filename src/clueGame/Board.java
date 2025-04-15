@@ -28,13 +28,13 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Board {
-	private static final String ROOM_TYPE_LABEL = "Room";
-	private static final String SPACE_TYPE_LABEL = "Space";
-	private static final String PERSON_TYPE_LABEL = "Person";
-	private static final String WEAPON_TYPE_LABEL = "Weapon";
-
-	private static final String WALKWAY_LABEL = "Walkway";
-	private static final String UNUSED_LABEL = "Unused";
+	private static final String
+		ROOM_TYPE_LABEL = "Room",
+		SPACE_TYPE_LABEL = "Space",
+		PERSON_TYPE_LABEL = "Person",
+		WEAPON_TYPE_LABEL = "Weapon",
+		WALKWAY_LABEL = "Walkway",
+		UNUSED_LABEL = "Unused";
 
 	private static Board theInstance;
 
@@ -204,12 +204,12 @@ public class Board {
 
 							switch (special) {
 								case Room.LABEL_MARKER -> {
-									cell.setIsLabel(true);
+									cell.setIsRoomLabel(true);
 									room.setLabelCell(cell);
 									cell.setIsRoomCenter(false);
 								}
 								case Room.CENTER_MARKER -> {
-									cell.setIsLabel(false);
+									cell.setIsRoomLabel(false);
 									cell.setIsRoomCenter(true);
 									room.setCenterCell(cell);
 								}

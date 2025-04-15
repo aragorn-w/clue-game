@@ -25,17 +25,18 @@ public class BoardCell {
 
 	private final char initial;
 
-	private DoorDirection doorDirection;
-
-	private boolean isRoomLabel;
-	private boolean isRoomCenter;
+	private boolean
+		isRoomLabel,
+		isRoomCenter,
+		isWalkway,
+		isRoom,
+		isOccupied;
+	
 	private char secretPassage;
 
-	private final Set<BoardCell> adjList;
+	private DoorDirection doorDirection;
 
-	private boolean isWalkway;
-	private boolean isRoom;
-	private boolean isOccupied;
+	private final Set<BoardCell> adjList;
 
 	public BoardCell(int row, int col, char initial) throws BadConfigFormatException {
 		super();
@@ -61,19 +62,11 @@ public class BoardCell {
 		return doorDirection != null;
 	}
 
-	public DoorDirection getDoorDirection() {
-		return doorDirection;
-	}
-
-	public void setDoorDirection(DoorDirection doorDirection) {
-		this.doorDirection = doorDirection;
-	}
-
-	public boolean isLabel() {
+	public boolean isRoomLabel() {
 		return isRoomLabel;
 	}
 
-	public void setIsLabel(boolean isRoomLabel) {
+	public void setIsRoomLabel(boolean isRoomLabel) {
 		this.isRoomLabel = isRoomLabel;
 	}
 
@@ -83,26 +76,6 @@ public class BoardCell {
 
 	public void setIsRoomCenter(boolean isRoomCenter) {
 		this.isRoomCenter = isRoomCenter;
-	}
-
-	public boolean isSecretPassage() {
-		return secretPassage != 0;
-	}
-
-	public char getSecretPassage() {
-		return secretPassage;
-	}
-
-	public void setSecretPassage(char secretPassage) {
-		this.secretPassage = secretPassage;
-	}
-
-	public void addAdj(BoardCell cell) {
-		adjList.add(cell);
-	}
-
-	public Set<BoardCell> getAdjList() {
-		return adjList;
 	}
 
 	public boolean isWalkway() {
@@ -127,5 +100,33 @@ public class BoardCell {
 
 	public void setOccupied(boolean isOccupied) {
 		this.isOccupied = isOccupied;
+	}
+
+	public boolean isSecretPassage() {
+		return secretPassage != 0;
+	}
+
+	public char getSecretPassage() {
+		return secretPassage;
+	}
+
+	public void setSecretPassage(char secretPassage) {
+		this.secretPassage = secretPassage;
+	}
+
+	public DoorDirection getDoorDirection() {
+		return doorDirection;
+	}
+
+	public void setDoorDirection(DoorDirection doorDirection) {
+		this.doorDirection = doorDirection;
+	}
+
+	public void addAdj(BoardCell cell) {
+		adjList.add(cell);
+	}
+
+	public Set<BoardCell> getAdjList() {
+		return adjList;
 	}
 }

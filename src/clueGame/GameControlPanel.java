@@ -28,6 +28,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class GameControlPanel extends JPanel {
+	private static final int
+		PLAYER_TURN_TEXT_LENGTH = 20,
+		ROLL_TEXT_LENGTH = 10,
+		GUESS_TEXT_LENGTH = 30,
+		GUESS_RESULT_TEXT_LENGTH = 30;
+
 	private JTextField playerTurnText;
 	private JTextField rollText;
 	private JTextField guessText;
@@ -65,13 +71,13 @@ public class GameControlPanel extends JPanel {
 
 		// Top row panel's leftmost component's components
 		playerTurnPanel.add(new JLabel("Whose turn?"));
-		playerTurnText = new JTextField(20);
+		playerTurnText = new JTextField(PLAYER_TURN_TEXT_LENGTH);
 		playerTurnText.setEditable(false);
 		playerTurnPanel.add(playerTurnText);
 
 		// Top row panel's 2nd leftmost component's components
 		rollPanel.add(new JLabel("Roll:"));
-		rollText = new JTextField(10);
+		rollText = new JTextField(ROLL_TEXT_LENGTH);
 		rollText.setEditable(false);
 		rollPanel.add(rollText);
 
@@ -84,12 +90,12 @@ public class GameControlPanel extends JPanel {
 		guessStatusPanel.add(guessResultPanel);
 
 		// Bottom row panel's left component's components
-		guessText = new JTextField(30);
+		guessText = new JTextField(GUESS_TEXT_LENGTH);
 		guessText.setEditable(false);
 		guessPanel.add(guessText);
 
 		// Bottom row panel's right component's components
-		guessResultText = new JTextField(30);
+		guessResultText = new JTextField(GUESS_RESULT_TEXT_LENGTH);
 		guessResultText.setEditable(false);
 		guessResultPanel.add(guessResultText);
 	}

@@ -20,9 +20,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Solution {
-	private Card roomCard;
-	private Card personCard;
-	private Card weaponCard;
+	private Card
+		roomCard,
+		personCard,
+		weaponCard;
 
 	public Solution() {
 		super();
