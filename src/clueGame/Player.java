@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 5, 2025
+ * Date Last Edited: April 14, 2025
  * 
  * Collaborators: None
  * 
@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.awt.Color;
+import java.awt.Graphics;
 
 public abstract class Player {
 	private static final Color
@@ -47,7 +48,7 @@ public abstract class Player {
 		this.name = name;
 		this.row = row;
 		this.column = column;
-		switch(color) {
+		switch (color) {
 			case "Gold" -> this.color = GOLD;
 			case "Blue" -> this.color = BLUE;
 			case "Green" -> this.color = GREEN;
@@ -57,8 +58,15 @@ public abstract class Player {
 		}
 	}
 
+	public void draw(Graphics graphics, int width, int height) {
+		int pixelCol = column * width;
+		int pixelRow = row * height;
+
+		graphics.setColor(color);
+		graphics.fillOval(pixelCol, pixelRow, width, height);
+	}
+
 	public boolean updateHand(Card card) {
-		seenCards.add(card);
 		return hand.add(card);
 	}
 
@@ -76,6 +84,7 @@ public abstract class Player {
 
 	public Card disproveSuggestion(Solution suggestion) {
 		Set<Card> matchingCards = new HashSet<>(hand);
+		// Retain all will do a set intersection between the two sets
 		matchingCards.retainAll(suggestion.getCardSet());
 		List<Card> matchingCardsList = new ArrayList<>(matchingCards);
 		if (!matchingCardsList.isEmpty()) {

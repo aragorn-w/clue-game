@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 8, 2025
+ * Date Last Edited: April 14, 2025
  * 
  * Collaborators: None
  * 
@@ -34,10 +34,11 @@ public class GameControlPanel extends JPanel {
 		GUESS_TEXT_LENGTH = 30,
 		GUESS_RESULT_TEXT_LENGTH = 30;
 
-	private JTextField playerTurnText;
-	private JTextField rollText;
-	private JTextField guessText;
-	private JTextField guessResultText;
+	private JTextField
+		playerTurnText,
+		rollText,
+		guessText,
+		guessResultText;
 
 	public GameControlPanel() {
 		super();
@@ -48,7 +49,7 @@ public class GameControlPanel extends JPanel {
 		JPanel guessStatusPanel = new JPanel(new GridLayout(0, 2));
 		add(turnAndActionPanel);
 		add(guessStatusPanel);
-
+		
 		// Top row panel's components
 		JPanel playerTurnPanel = new JPanel();
 		playerTurnPanel.setLayout(new BoxLayout(playerTurnPanel, BoxLayout.Y_AXIS));

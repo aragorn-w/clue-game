@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 8, 2025
+ * Date Last Edited: April 14, 2025
  * 
  * Collaborators: None
  * 
@@ -87,7 +87,7 @@ public class CardsPanel extends JPanel {
 		cardSetPanel.setLayout(new GridLayout(0, 1));
 
 		cardSetPanel.add(new JLabel(cardSetLabel));
-		for (Card card : getCardsOfType(cardSet, type)) {
+		for (Card card: getCardsOfType(cardSet, type)) {
 			JTextField cardText = new JTextField(card.getName());
 			cardText.setEditable(false);
 			cardText.setBorder(BorderFactory.createLineBorder(Color.BLACK));

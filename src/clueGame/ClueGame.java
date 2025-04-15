@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 8, 2025
+ * Date Last Edited: April 14, 2025
  * 
  * Collaborators: None
  * 
@@ -16,11 +16,53 @@
 
 package clueGame;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class ClueGame extends JFrame {
+	private static final int
+		GAME_WINDOW_WIDTH = 1100,
+		GAME_WINDOW_HEIGHT = 700,
+		CARDS_PANEL_WIDTH_PERCENT = 20,
+		GAME_CONTROL_PANEL_HEIGHT_PERCENT = 16;
+
+	private JPanel
+		boardPanel,
+		cardsPanel,
+		gameControlPanel;
+
 	public ClueGame() {
 		super();
+		setLayout(new BorderLayout());
+
+		setSize(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Clue Game");
+
+		boardPanel = new BoardPanel();
+		cardsPanel = new CardsPanel();
+		cardsPanel.setPreferredSize(
+			new Dimension(
+				(int) (GAME_WINDOW_WIDTH * CARDS_PANEL_WIDTH_PERCENT / 100),
+				getHeight()
+			)
+		);
+		gameControlPanel = new GameControlPanel();
+		gameControlPanel.setPreferredSize(
+			new Dimension(
+				getWidth(),
+				(int) (GAME_WINDOW_HEIGHT * GAME_CONTROL_PANEL_HEIGHT_PERCENT / 100)
+			)
+		);
+
+		add(boardPanel, BorderLayout.CENTER);
+		add(cardsPanel, BorderLayout.EAST);
+		add(gameControlPanel, BorderLayout.SOUTH);
+
+		setVisible(true);
 	}
 
 	public static void main(String[] args) {
@@ -29,9 +71,5 @@ public class ClueGame extends JFrame {
 		Board.getInstance().dealCards();
 
 		ClueGame game = new ClueGame();
-		game.setSize(800, 600);
-		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		game.setTitle("Clue Game");
-		game.setVisible(true);
 	}
 }

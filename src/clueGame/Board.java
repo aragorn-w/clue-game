@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 5, 2025
+ * Date Last Edited: April 14, 2025
  * 
  * Collaborators: None
  * 
@@ -94,17 +94,16 @@ public class Board {
 				if (line.substring(0, 2).equals("//")) {
 					continue;
 				}
-
+				
 				try {
 					String[] markerInfo = line.split(", ");
 					String infoType = markerInfo[0];
+					Card card = null;
 					switch (infoType) {
 						case ROOM_TYPE_LABEL -> {
 							String roomLabel = markerInfo[1];
-							Card card = new Card(roomLabel, CardType.ROOM);
+							card = new Card(roomLabel, CardType.ROOM);
 							roomCards.add(card);
-							nonAnswerCards.add(card);
-							
 							char initial = markerInfo[2].charAt(0);
 							roomMap.put(initial, new Room(roomLabel));
 						}
@@ -119,26 +118,32 @@ public class Board {
 							roomMap.put(initial, new Room(roomLabel));
 						}
 						case PERSON_TYPE_LABEL -> {
-							Card card = new Card(markerInfo[1], CardType.PERSON);
-							playerCards.add(card);
-							nonAnswerCards.add(card);
-							
+							card = new Card(markerInfo[1], CardType.PERSON);
+							playerCards.add(card);							
 							Player player;
 							if (players.isEmpty()) {
-								player = new HumanPlayer(markerInfo[1], markerInfo[2], Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4]));
+								player = new HumanPlayer(
+									markerInfo[1],
+									markerInfo[2],
+									Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4])
+								);
 								humanPlayer = player;
 							} else {
-								player = new ComputerPlayer(markerInfo[1], markerInfo[2], Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4]));
+								player = new ComputerPlayer(
+									markerInfo[1],
+									markerInfo[2],
+									Integer.parseInt(markerInfo[3]), Integer.parseInt(markerInfo[4])
+								);
 							}
 							players.add(player);
 						}
 						case WEAPON_TYPE_LABEL -> {
-							Card card = new Card(markerInfo[1], CardType.WEAPON);
+							card = new Card(markerInfo[1], CardType.WEAPON);
 							weaponCards.add(card);
-							nonAnswerCards.add(card);
 						}
 						default -> throw new Exception("Invalid type \"" + markerInfo[1] + "\" in setup config.");
 					}
+					nonAnswerCards.add(card);
 				} catch (Exception exception) {
 					scanner.close();
 					throw new BadConfigFormatException(exception.getMessage());
@@ -373,6 +378,10 @@ public class Board {
 		return numCols;
 	}
 
+	public List<List<BoardCell>> getGrid() {
+		return grid;
+	}
+
 	public BoardCell getCell(int row, int col) {
 		return grid.get(row).get(col);
 	}
@@ -387,6 +396,10 @@ public class Board {
 
 	public Card getRoomCard(BoardCell cell) {
 		return new Card(getRoom(cell).getName(), CardType.ROOM);
+	}
+
+	public List<Room> getRooms() {
+		return new ArrayList<>(roomMap.values());
 	}
 
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {

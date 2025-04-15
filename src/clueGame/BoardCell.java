@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: March 25, 2025
+ * Date Last Edited: April 14, 2025
  * 
  * Collaborators: None
  * 
@@ -16,6 +16,7 @@
 
 package clueGame;
 
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,6 +45,52 @@ public class BoardCell {
 		this.col = col;
 		this.initial = initial;
 		this.adjList = new HashSet<>();
+	}
+
+	public void draw(Graphics graphics, int width, int height) {
+		int pixelCol = col * width;
+		int pixelRow = row * height;
+
+		if (isRoom) {
+			graphics.setColor(BoardPanel.ROOM_COLOR);
+			graphics.fillRect(pixelCol, pixelRow, width, height);
+		} else if (isWalkway) {
+			graphics.setColor(BoardPanel.WALKWAY_COLOR);
+			graphics.fillRect(pixelCol, pixelRow, width, height);
+
+			graphics.setColor(BoardPanel.WALKWAY_CELL_BORDER_COLOR);
+			graphics.drawRect(pixelCol, pixelRow, width, height);
+		}
+	}
+
+	public void drawDoorway(Graphics graphics, int width, int height) {
+		if (doorDirection == null) {
+			return;
+		}
+
+		int pixelCol = col * width;
+		int pixelRow = row * height;
+
+		graphics.setColor(BoardPanel.DOORWAY_COLOR);
+
+		int doorwayThickness = (int) (width * BoardPanel.DOORWAY_THICKNESS_CELL_PERCENT / 100.0);
+		switch (doorDirection) {
+			case UP -> {
+				graphics.fillRect(pixelCol, pixelRow - doorwayThickness, width, doorwayThickness);
+			}
+			case RIGHT -> {
+				graphics.fillRect(pixelCol + width, pixelRow, doorwayThickness, height);
+			}
+			case DOWN -> {
+				graphics.fillRect(pixelCol, pixelRow + height, width, doorwayThickness);
+			}
+			case LEFT -> {
+				graphics.fillRect(pixelCol - doorwayThickness, pixelRow, doorwayThickness, height);
+			}
+			default -> {
+				throw new IllegalStateException("Unexpected value: " + doorDirection);
+			}
+		}
 	}
 
 	public int getRow() {

@@ -16,6 +16,9 @@
 
 package clueGame;
 
+import java.awt.Font;
+import java.awt.Graphics;
+
 public class Room {
 	public static final char LABEL_MARKER = '#';
 	public static final char CENTER_MARKER = '*';
@@ -28,6 +31,22 @@ public class Room {
 	public Room(String name) {
 		super();
 		this.name = name;
+	}
+
+	public void drawLabel(Graphics graphics, int width, int height) {
+		if (labelCell == null) {
+			return;
+		}
+
+		int pixelCol = labelCell.getCol() * width + BoardPanel.ROOM_LABEL_TEXT_PADDING;
+		int pixelRow = labelCell.getRow() * height + BoardPanel.ROOM_LABEL_FONT_PX_SIZE;
+
+		graphics.setColor(BoardPanel.LABEL_TEXT_COLOR);
+
+		Font oldFont = graphics.getFont();
+		graphics.setFont(graphics.getFont().deriveFont(BoardPanel.ROOM_LABEL_FONT_PX_SIZE).deriveFont(Font.BOLD));
+		graphics.drawString(name, pixelCol, pixelRow);
+		graphics.setFont(oldFont);
 	}
 
 	public String getName() {
