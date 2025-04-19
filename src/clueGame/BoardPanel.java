@@ -28,7 +28,9 @@ public class BoardPanel extends JPanel {
 		UNUSED_COLOR = Color.BLACK,
 		LABEL_TEXT_COLOR = Color.BLUE,
 		WALKWAY_CELL_BORDER_COLOR = Color.BLACK,
-		DOORWAY_COLOR = Color.BLUE;
+		DOORWAY_COLOR = Color.BLUE,
+		TARGET_COLOR = Color.CYAN;
+		
 	
 	public static final int
 		DOORWAY_THICKNESS_CELL_PERCENT = 20,

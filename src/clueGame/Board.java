@@ -106,6 +106,7 @@ public class Board {
 							roomCards.add(card);
 							char initial = markerInfo[2].charAt(0);
 							roomMap.put(initial, new Room(roomLabel));
+							nonAnswerCards.add(card);
 						}
 						case SPACE_TYPE_LABEL -> {
 							String roomLabel = markerInfo[1];
@@ -136,14 +137,15 @@ public class Board {
 								);
 							}
 							players.add(player);
+							nonAnswerCards.add(card);
 						}
 						case WEAPON_TYPE_LABEL -> {
 							card = new Card(markerInfo[1], CardType.WEAPON);
 							weaponCards.add(card);
+							nonAnswerCards.add(card);
 						}
 						default -> throw new Exception("Invalid type \"" + markerInfo[1] + "\" in setup config.");
 					}
-					nonAnswerCards.add(card);
 				} catch (Exception exception) {
 					scanner.close();
 					throw new BadConfigFormatException(exception.getMessage());
@@ -411,6 +413,8 @@ public class Board {
 		return getCell(row, col).getAdjList();
 	}
 
+	// TODO: make sure that this cannot be an occupied cell 
+	// except in cases of rooms
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited = new HashSet<>();
 		targets = new HashSet<>();

@@ -69,4 +69,9 @@ public class ComputerPlayer extends Player {
 		List<BoardCell> targetList = new ArrayList<>(targets);
 		return targetList.get((int) (Math.random() * targetList.size()));
 	}
+	
+	// TODO: Implement, should not always accuse, test to see if accusing makes sense
+	public void doAccusation() {
+		return;
+	}
 }

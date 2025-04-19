@@ -18,6 +18,8 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -55,16 +57,20 @@ public class GameControlPanel extends JPanel {
 		playerTurnPanel.setLayout(new BoxLayout(playerTurnPanel, BoxLayout.Y_AXIS));
 		JPanel rollPanel = new JPanel();
 		rollPanel.setLayout(new BoxLayout(rollPanel, BoxLayout.X_AXIS));
+		
 		JButton makeAccusationButton = new JButton("Make Accusation");
 		makeAccusationButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		makeAccusationButton.setBackground(Color.LIGHT_GRAY);
 		makeAccusationButton.setOpaque(true);
 		makeAccusationButton.setBorderPainted(true);
+		
 		JButton nextTurnButton = new JButton("NEXT!");
 		nextTurnButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		nextTurnButton.setBackground(Color.LIGHT_GRAY);
 		nextTurnButton.setOpaque(true);
 		nextTurnButton.setBorderPainted(true);
+		nextTurnButton.addActionListener(e -> ClueGame.getInstance().nextTurn());
+	
 		turnAndActionPanel.add(playerTurnPanel);
 		turnAndActionPanel.add(rollPanel);
 		turnAndActionPanel.add(makeAccusationButton);
@@ -113,6 +119,47 @@ public class GameControlPanel extends JPanel {
 
 	public void setGuessResultText(String string) {
 		guessResultText.setText(string);
+	}
+	
+	public void setSuggestion(Solution solution) {
+		if (solution == null) {
+			setGuessText("");
+			setGuessResultText("");
+			guessText.setBackground(Color.LIGHT_GRAY);
+			guessResultText.setBackground(Color.LIGHT_GRAY);
+			return; 
+		}
+		
+		ClueGame clueGame = ClueGame.getInstance();
+		Card card = null;
+		Player disprovalPlayer = null;
+		for (Player player : Board.getInstance().getPlayers()) {
+			card = player.disproveSuggestion(solution);
+			if (card != null) {
+				disprovalPlayer = player;
+				break;
+			}
+		}
+		
+		// Set guess text
+		setGuessText(solution.toString());
+		guessText.setBackground(Board.getInstance().getPlayers().get(clueGame.getPlayerTurnIndex()).getColor());
+		
+		// Set guess text result if no disproval
+		if (card == null) {
+			setGuessResultText("No disproval!");
+			guessResultText.setBackground(Color.LIGHT_GRAY);
+			return;
+		}
+		
+		guessResultText.setBackground(disprovalPlayer.getColor());
+		// Otherwise two cases for if player is/isnt computer
+		if (clueGame.getPlayerTurnIndex() == 0) {
+			setGuessResultText(card.toString());
+		} else {
+			setGuessResultText("Suggestion disproved!");
+		}
+
 	}
 
 	public static void main(String[] args) {

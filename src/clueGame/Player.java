@@ -109,6 +109,11 @@ public abstract class Player {
 	public String toString() {
 		return name + " " + color + " " + row + " " + column;
 	}
+	
+	public void move(BoardCell cell) {
+		row = cell.getRow();
+		column = cell.getCol(); // TODO: lack of parity with this class?
+	}
 
 	public String getName() {
 		return name;

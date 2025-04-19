@@ -52,11 +52,23 @@ public class BoardCell {
 		int pixelRow = row * height;
 
 		if (isRoom) {
-			graphics.setColor(BoardPanel.ROOM_COLOR);
-			graphics.fillRect(pixelCol, pixelRow, width, height);
+			if (!ClueGame.getInstance().getHumanTurnFinished() && Board.getInstance().getTargets().contains(this)) {
+				graphics.setColor(BoardPanel.TARGET_COLOR);
+				graphics.fillRect(pixelCol, pixelRow, width, height);
+			} else {
+				graphics.setColor(BoardPanel.ROOM_COLOR);
+				graphics.fillRect(pixelCol, pixelRow, width, height);
+			}
+			
 		} else if (isWalkway) {
-			graphics.setColor(BoardPanel.WALKWAY_COLOR);
-			graphics.fillRect(pixelCol, pixelRow, width, height);
+			
+			if (!ClueGame.getInstance().getHumanTurnFinished() && Board.getInstance().getTargets().contains(this)) {
+				graphics.setColor(BoardPanel.TARGET_COLOR);
+				graphics.fillRect(pixelCol, pixelRow, width, height);
+			} else {
+				graphics.setColor(BoardPanel.WALKWAY_COLOR);
+				graphics.fillRect(pixelCol, pixelRow, width, height);
+			}
 
 			graphics.setColor(BoardPanel.WALKWAY_CELL_BORDER_COLOR);
 			graphics.drawRect(pixelCol, pixelRow, width, height);

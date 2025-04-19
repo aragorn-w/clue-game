@@ -63,7 +63,7 @@ public class GameSetupTests {
 		Player computer = board.getPlayers().get(1);
 		
 		// Test name + colors assignment
-		assertEquals("Fanny Wanter", human.getName());
+		assertEquals("Hans Wolfeschlegelstein", human.getName());
 		assertEquals("Rick Roelle", computer.getName());
 		assertEquals(new Color(184, 143, 64), human.getColor());
 		
