@@ -16,6 +16,8 @@
 
 package clueGame;
 
+import java.util.Objects;
+
 public class Card {
 	private String name;
 	private CardType type;
@@ -36,6 +38,11 @@ public class Card {
 		}
 		Card card = (Card) obj;
 		return card.name.equals(name) && card.type == type;
+	}
+	
+	@Override
+	public int hashCode() {
+	    return Objects.hash(name, type);
 	}
 
 	@Override

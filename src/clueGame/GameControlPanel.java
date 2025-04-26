@@ -20,6 +20,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -63,6 +65,7 @@ public class GameControlPanel extends JPanel {
 		makeAccusationButton.setBackground(Color.LIGHT_GRAY);
 		makeAccusationButton.setOpaque(true);
 		makeAccusationButton.setBorderPainted(true);
+		makeAccusationButton.addActionListener(e -> ClueGame.getInstance().makeAccusation());
 		
 		JButton nextTurnButton = new JButton("NEXT!");
 		nextTurnButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -121,19 +124,21 @@ public class GameControlPanel extends JPanel {
 		guessResultText.setText(string);
 	}
 	
-	public void setSuggestion(Solution solution) {
+	public Card setSuggestion(Solution solution) {
 		if (solution == null) {
 			setGuessText("");
 			setGuessResultText("");
 			guessText.setBackground(Color.LIGHT_GRAY);
 			guessResultText.setBackground(Color.LIGHT_GRAY);
-			return; 
+			return null;
 		}
 		
 		ClueGame clueGame = ClueGame.getInstance();
 		Card card = null;
 		Player disprovalPlayer = null;
-		for (Player player : Board.getInstance().getPlayers()) {
+		ArrayList<Player> players = new ArrayList<>(Board.getInstance().getPlayers());
+		Collections.shuffle(players);
+		for (Player player : players) {
 			card = player.disproveSuggestion(solution);
 			if (card != null) {
 				disprovalPlayer = player;
@@ -149,7 +154,7 @@ public class GameControlPanel extends JPanel {
 		if (card == null) {
 			setGuessResultText("No disproval!");
 			guessResultText.setBackground(Color.LIGHT_GRAY);
-			return;
+			return null;
 		}
 		
 		guessResultText.setBackground(disprovalPlayer.getColor());
@@ -159,6 +164,7 @@ public class GameControlPanel extends JPanel {
 		} else {
 			setGuessResultText("Suggestion disproved!");
 		}
+		return card;
 
 	}
 

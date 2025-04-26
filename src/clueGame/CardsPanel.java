@@ -138,6 +138,18 @@ public class CardsPanel extends JPanel {
 	public void addSeenWeaponCard(Card card) {
 		updatePanel(seenWeaponCardsPanel, card);
 	}
+	
+	public void addCard(Card card) {
+		if (Board.getInstance().getHumanPlayer().getHand().contains(card) || 
+			Board.getInstance().getHumanPlayer().getSeenCards().contains(card)) return;
+		switch(card.getType()) {
+			case ROOM -> addSeenRoomCard(card);
+			case WEAPON -> addSeenWeaponCard(card);
+			case PERSON -> addSeenPersonCard(card);
+			default -> {}
+		}
+		Board.getInstance().getHumanPlayer().updateSeen(card);
+	}
 
 	private void updatePanel(JPanel panel, Card card) {
 		JTextField newCardText = new JTextField(card.getName());

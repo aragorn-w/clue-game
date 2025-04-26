@@ -41,6 +41,8 @@ public abstract class Player {
 	private Set<Card> hand;
 	private Set<Card> seenCards;
 	
+	private boolean dragged = false;
+	
 	public Player(String name, String color, int row, int column) {
 		super();
 		this.hand = new HashSet<Card>();
@@ -88,7 +90,7 @@ public abstract class Player {
 		matchingCards.retainAll(suggestion.getCardSet());
 		List<Card> matchingCardsList = new ArrayList<>(matchingCards);
 		if (!matchingCardsList.isEmpty()) {
-			return matchingCardsList.get((int) (Math.random() * matchingCardsList.size()));
+			return matchingCardsList.get((int) (Math.random() * (matchingCardsList.size())));
 		}
 		return null;
 	}
@@ -111,8 +113,18 @@ public abstract class Player {
 	}
 	
 	public void move(BoardCell cell) {
+		Board.getInstance().getCell(row, column).setOccupied(false);
+		cell.setOccupied(true);
 		row = cell.getRow();
-		column = cell.getCol(); // TODO: lack of parity with this class?
+		column = cell.getCol();
+	}
+
+	public boolean isDragged() {
+		return dragged;
+	}
+
+	public void setDragged(boolean dragged) {
+		this.dragged = dragged;
 	}
 
 	public String getName() {

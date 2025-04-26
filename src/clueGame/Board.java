@@ -152,15 +152,15 @@ public class Board {
 				}
 			}
 			
-			Card randomCard = roomCards.get((int) Math.random() * roomCards.size());
+			Card randomCard = roomCards.get((int) (Math.random() * roomCards.size()));
 			theAnswer.setRoomCard(randomCard);
 			nonAnswerCards.remove(randomCard);
 			
-			randomCard = playerCards.get((int) Math.random() * playerCards.size());
+			randomCard = playerCards.get((int) (Math.random() * playerCards.size()));
 			theAnswer.setPersonCard(randomCard);
 			nonAnswerCards.remove(randomCard);
 			
-			randomCard = weaponCards.get((int) Math.random() * weaponCards.size());
+			randomCard = weaponCards.get((int) (Math.random() * weaponCards.size()));
 			theAnswer.setWeaponCard(randomCard);
 			nonAnswerCards.remove(randomCard);
 		}
@@ -413,12 +413,16 @@ public class Board {
 		return getCell(row, col).getAdjList();
 	}
 
-	// TODO: make sure that this cannot be an occupied cell 
-	// except in cases of rooms
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited = new HashSet<>();
 		targets = new HashSet<>();
 		findAllTargets(startCell, pathLength);
+		if (players.get(ClueGame.getInstance().getPlayerTurnIndex()).isDragged() && startCell.isRoomCenter()) {
+			targets.add(startCell);
+		}
+		if(targets.isEmpty()) {
+			targets.add(startCell);
+		}
 	}
 
 	private void findAllTargets(BoardCell startCell, int pathLength) {
@@ -479,5 +483,16 @@ public class Board {
 		List<Card> deck = new ArrayList<>(nonAnswerCards);
 		deck.addAll(theAnswer.getCardSet());
 		return deck;
+	}
+	
+	public Player getPlayerFromCard(Card card) {
+		if (card.getType() != CardType.PERSON) return null;
+		for (Player player : players) {
+			if (card.getName() == player.getName()) {
+				return player;
+			}
+		}
+		System.out.println("THIS SHOULD NOT PRINT");
+		return null;
 	}
 }
