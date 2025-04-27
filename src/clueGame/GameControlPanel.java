@@ -18,8 +18,6 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -65,14 +63,14 @@ public class GameControlPanel extends JPanel {
 		makeAccusationButton.setBackground(Color.LIGHT_GRAY);
 		makeAccusationButton.setOpaque(true);
 		makeAccusationButton.setBorderPainted(true);
-		makeAccusationButton.addActionListener(e -> ClueGame.getInstance().makeAccusation());
+		makeAccusationButton.addActionListener(_ -> ClueGame.getInstance().makeAccusation());
 		
 		JButton nextTurnButton = new JButton("NEXT!");
 		nextTurnButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		nextTurnButton.setBackground(Color.LIGHT_GRAY);
 		nextTurnButton.setOpaque(true);
 		nextTurnButton.setBorderPainted(true);
-		nextTurnButton.addActionListener(e -> ClueGame.getInstance().nextTurn());
+		nextTurnButton.addActionListener(_ -> ClueGame.getInstance().nextTurn());
 	
 		turnAndActionPanel.add(playerTurnPanel);
 		turnAndActionPanel.add(rollPanel);
