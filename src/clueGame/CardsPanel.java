@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -110,7 +109,7 @@ public class CardsPanel extends JPanel {
 		cardText.setEditable(false);
 		cardText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		for (Player player : Board.getInstance().getPlayers()) {
-			if (player.getSeenCards().contains(card)) {
+			if (player.getHand().contains(card)) {
 				cardText.setBackground(player.getColor());
 				break;
 			}
@@ -157,68 +156,5 @@ public class CardsPanel extends JPanel {
 		panel.add(newCardText);
 		panel.revalidate();
 		panel.repaint();
-	}
-
-	public static void main(String[] args) {
-		Board.getInstance().setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
-		Board.getInstance().initialize();
-		Board.getInstance().dealCards();
-
-		JFrame frame = new JFrame();
-		frame.setSize(180, 750);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		CardsPanel cardsPanel = new CardsPanel();
-		frame.setContentPane(cardsPanel);
-		frame.setVisible(true);
-
-		Player humanPlayer = Board.getInstance().getHumanPlayer();
-		Player firstComputerPlayer = null;
-		Player secondComputerPlayer = null;
-		Player thirdComputerPlayer = null;
-		for (Player player : Board.getInstance().getPlayers()) {
-			if (player != humanPlayer) {
-				if (firstComputerPlayer == null) {
-					firstComputerPlayer = player;
-				} else {
-					if (secondComputerPlayer == null) {
-						secondComputerPlayer = player;
-					} else if (thirdComputerPlayer == null) {
-						thirdComputerPlayer = player;
-						break;
-					}
-				}
-			}
-		}
-		assert firstComputerPlayer != null;
-		assert secondComputerPlayer != null;
-		assert thirdComputerPlayer != null;
-		
-		// Test updaters after human player sees new cards of different types
-
-		Card newPersonCard = new Card("Miss Scarlet", CardType.PERSON);
-		humanPlayer.updateSeen(newPersonCard);
-		cardsPanel.addSeenPersonCard(newPersonCard);
-		
-		Card newRoomCard = new Card("Dining Room", CardType.ROOM);
-		humanPlayer.updateSeen(newRoomCard);
-		cardsPanel.addSeenRoomCard(newRoomCard);
-		
-		Card newWeaponCard = new Card("Revolver", CardType.WEAPON);
-		humanPlayer.updateSeen(newWeaponCard);
-		cardsPanel.addSeenWeaponCard(newWeaponCard);
-
-		// Test updaters after computer players see new cards of different types
-
-		Card computerPersonCard = new Card("Professor Plum", CardType.PERSON);
-		firstComputerPlayer.updateSeen(computerPersonCard);
-		cardsPanel.addSeenPersonCard(computerPersonCard);
-
-		Card computerRoomCard = new Card("Kitchen", CardType.ROOM);
-		secondComputerPlayer.updateSeen(computerRoomCard);
-		cardsPanel.addSeenRoomCard(computerRoomCard);
-		
-		Card computerWeaponCard = new Card("Acid", CardType.WEAPON);
-		thirdComputerPlayer.updateSeen(computerWeaponCard);
-		cardsPanel.addSeenWeaponCard(computerWeaponCard);
 	}
 }
