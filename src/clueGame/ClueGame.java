@@ -39,6 +39,8 @@ import javax.swing.JPanel;
 public class ClueGame extends JFrame {
 	private static ClueGame theInstance;
 	
+	private static Clip moveSoundClip;
+	
 	private int playerTurnIndex;
 	private boolean humanTurnFinished;
 	
@@ -64,10 +66,10 @@ public class ClueGame extends JFrame {
 
 		boardPanel = new BoardPanel();
 		boardPanel.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent event) {
-		    	clickBoard(event);
-		    }
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				clickBoard(event);
+			}
 		});
 		cardsPanel = new CardsPanel();
 		cardsPanel.setPreferredSize(
@@ -109,12 +111,20 @@ public class ClueGame extends JFrame {
 
 		// Loop elevator music, forever, as the background music
 		try {
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("data/ElevatorMusic.wav"));
+			AudioInputStream backgroundAudioStream = AudioSystem.getAudioInputStream(
+				new File("data/ElevatorMusic.wav")
+			);
 			Clip backgroundMusic = AudioSystem.getClip();
-			backgroundMusic.open(audioStream);
+			backgroundMusic.open(backgroundAudioStream);
 			backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+
+			AudioInputStream clickToMoveAudioStream = AudioSystem.getAudioInputStream(
+				new File("data/MoveSound.wav")
+			);
+			moveSoundClip = AudioSystem.getClip();
+			moveSoundClip.open(clickToMoveAudioStream);
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException exception) {
-			System.err.println("Background music failed to play: " + exception.getMessage());
+			System.err.println("Background music or move sound failed to load: " + exception.getMessage());
 		}
 
 		JOptionPane.showMessageDialog(
@@ -202,34 +212,34 @@ public class ClueGame extends JFrame {
 		
 		// Create the combo boxes
 		JComboBox<Card> room = new JComboBox<>(rooms.toArray(new Card[0]));
-        JComboBox<Card> person = new JComboBox<>(people.toArray(new Card[0]));
-        JComboBox<Card> weapon = new JComboBox<>(weapons.toArray(new Card[0]));
+		JComboBox<Card> person = new JComboBox<>(people.toArray(new Card[0]));
+		JComboBox<Card> weapon = new JComboBox<>(weapons.toArray(new Card[0]));
 
-        // Create a panel and add the combo boxes
-        JPanel panel = new JPanel(new GridLayout(3, 2, 0, 5));
-        panel.add(new JLabel("Room: "));
-        panel.add(room);
-        panel.add(new JLabel("Person: "));
-        panel.add(person);
-        panel.add(new JLabel("Weapon: "));
-        panel.add(weapon);
+		// Create a panel and add the combo boxes
+		JPanel panel = new JPanel(new GridLayout(3, 2, 0, 5));
+		panel.add(new JLabel("Room: "));
+		panel.add(room);
+		panel.add(new JLabel("Person: "));
+		panel.add(person);
+		panel.add(new JLabel("Weapon: "));
+		panel.add(weapon);
 
-        // Show the dialog
-        int result = JOptionPane.showConfirmDialog(
+		// Show the dialog
+		int result = JOptionPane.showConfirmDialog(
 			null,
 			panel, 
 			"Make Accusation",
 			JOptionPane.OK_CANCEL_OPTION
 		);
 
-        if (result == JOptionPane.OK_OPTION) {
-        	Solution submitted = new Solution(
+		if (result == JOptionPane.OK_OPTION) {
+			Solution submitted = new Solution(
 				(Card) room.getSelectedItem(),
 				(Card) person.getSelectedItem(),
 				(Card) weapon.getSelectedItem()
 			);
-        	this.handleAccusation(board.checkAccusation(submitted) ? 1 : 0);
-        }
+			this.handleAccusation(board.checkAccusation(submitted) ? 1 : 0);
+		}
 	}
 	
 	private void handleAccusation(int accusationResult) {
@@ -279,82 +289,87 @@ public class ClueGame extends JFrame {
 
 		Board board = Board.getInstance();
 		
-        int x = event.getX();
-        int y = event.getY();
-        
-        int col = x / (boardPanel.getWidth() / board.getNumColumns());
-        int row = y / (boardPanel.getHeight() / board.getNumRows());
+		int x = event.getX();
+		int y = event.getY();
+		
+		int col = x / (boardPanel.getWidth() / board.getNumColumns());
+		int row = y / (boardPanel.getHeight() / board.getNumRows());
 
-        BoardCell clickedCell = board.getCell(row, col);
-        if (board.getTargets().contains(clickedCell)) {
-        	board.getHumanPlayer().move(clickedCell);
-        	humanTurnFinished = true;
-        	
-        	boardPanel.repaint();
-        	if (clickedCell.isRoomCenter()) {
-        		ArrayList<Card> people = new ArrayList<>();
-        		ArrayList<Card> weapons = new ArrayList<>();
-        		for (Card card : board.getNonAnswerCards()) {
-        			switch(card.getType()) {
-        				case WEAPON -> weapons.add(card);
-        				case PERSON -> people.add(card);
-        				default -> {}
-        			}
-        		}
-        		for (Card card : board.getTheAnswer().getCardSet()) {
-        			switch(card.getType()) {
-        				case WEAPON -> weapons.add(card);
-        				case PERSON -> people.add(card);
-        				default -> {}
-        			}
-        		}
-        		
-        		// Create the combo boxes
-        		JComboBox<Card> room = new JComboBox<>(new Card[]{board.getRoomCard(clickedCell)});
-                JComboBox<Card> person = new JComboBox<>(people.toArray(new Card[0]));
-                JComboBox<Card> weapon = new JComboBox<>(weapons.toArray(new Card[0]));
-
-                // Create a panel and add the combo boxes
-                JPanel panel = new JPanel(new GridLayout(3, 2, 0, 5));
-                panel.add(new JLabel("Room: "));
-                panel.add(room);
-                panel.add(new JLabel("Person: "));
-                panel.add(person);
-                panel.add(new JLabel("Weapon: "));
-                panel.add(weapon);
-
-                // Show the dialog
-                int result = JOptionPane.showConfirmDialog(
+		BoardCell clickedCell = board.getCell(row, col);
+		if (!board.getTargets().contains(clickedCell)) {
+			JOptionPane.showMessageDialog(
 					null,
-					panel,
-					"Make Suggestion",
-					JOptionPane.OK_CANCEL_OPTION
-				);
-
-                if (result == JOptionPane.OK_OPTION) {
-                	Solution submitted = new Solution(
-						(Card) room.getSelectedItem(),
-						(Card) person.getSelectedItem(),
-						(Card) weapon.getSelectedItem()
-					);
-                	Card card = gameControlPanel.setSuggestion(submitted);
-                	board.getPlayerFromCard(submitted.getPersonCard()).move(clickedCell);
-                	board.getPlayerFromCard(submitted.getPersonCard()).setDragged(true);
-    				boardPanel.repaint();
-                	if (card != null) {
-                		cardsPanel.addCard(card);
-                	}
-                }
-        	}
-        } else {
-        	JOptionPane.showMessageDialog(
-				null,
-				"Please select a valid cell.",
-				"ERROR",
-				JOptionPane.ERROR_MESSAGE
-			);
+					"Please select a valid cell.",
+					"ERROR",
+					JOptionPane.ERROR_MESSAGE);
 			return;
-        }
+		}
+
+		board.getHumanPlayer().move(clickedCell);
+		humanTurnFinished = true;
+
+		if (moveSoundClip != null) {
+			moveSoundClip.stop();
+			moveSoundClip.setFramePosition(0);
+			moveSoundClip.start();
+		}
+		
+		boardPanel.repaint();
+		if (clickedCell.isRoomCenter()) {
+			ArrayList<Card> people = new ArrayList<>();
+			ArrayList<Card> weapons = new ArrayList<>();
+			for (Card card : board.getNonAnswerCards()) {
+				switch(card.getType()) {
+					case WEAPON -> weapons.add(card);
+					case PERSON -> people.add(card);
+					default -> {}
+				}
+			}
+			for (Card card : board.getTheAnswer().getCardSet()) {
+				switch(card.getType()) {
+					case WEAPON -> weapons.add(card);
+					case PERSON -> people.add(card);
+					default -> {}
+				}
+			}
+			
+			// Create the combo boxes
+			JComboBox<Card> room = new JComboBox<>(new Card[]{board.getRoomCard(clickedCell)});
+			JComboBox<Card> person = new JComboBox<>(people.toArray(new Card[0]));
+			JComboBox<Card> weapon = new JComboBox<>(weapons.toArray(new Card[0]));
+
+			// Create a panel and add the combo boxes
+			JPanel panel = new JPanel(new GridLayout(3, 2, 0, 5));
+			panel.add(new JLabel("Room: "));
+			panel.add(room);
+			panel.add(new JLabel("Person: "));
+			panel.add(person);
+			panel.add(new JLabel("Weapon: "));
+			panel.add(weapon);
+
+			// Show the dialog
+			int result = JOptionPane.showConfirmDialog(
+				null,
+				panel,
+				"Make Suggestion",
+				JOptionPane.OK_CANCEL_OPTION
+			);
+
+			if (result == JOptionPane.OK_OPTION) {
+				Solution submitted = new Solution(
+					(Card) room.getSelectedItem(),
+					(Card) person.getSelectedItem(),
+					(Card) weapon.getSelectedItem()
+				);
+				Card card = gameControlPanel.setSuggestion(submitted);
+				board.getPlayerFromCard(submitted.getPersonCard()).move(clickedCell);
+				board.getPlayerFromCard(submitted.getPersonCard()).setDragged(true);
+				boardPanel.repaint();
+				if (card != null) {
+					cardsPanel.addCard(card);
+				}
+			}
+		}
 	}
 	
 	public static ClueGame getInstance() {

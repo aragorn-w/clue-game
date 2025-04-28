@@ -16,9 +16,15 @@
 
 package clueGame;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel {
@@ -31,20 +37,36 @@ public class BoardPanel extends JPanel {
 		DOORWAY_COLOR = Color.BLUE,
 		TARGET_COLOR = Color.CYAN;
 		
-	
 	public static final int
 		DOORWAY_THICKNESS_CELL_PERCENT = 20,
 		ROOM_LABEL_FONT_PX_SIZE = 14,
 		ROOM_LABEL_TEXT_PADDING = 5;
 
+	private static final float BACKGROUND_IMAGE_OPACITY = 1.0f;
+
+	private BufferedImage backgroundImage;
+
 	public BoardPanel() {
 		super();
 
+		try {
+			backgroundImage = ImageIO.read(new File("data/BoardBackground.png"));
+		} catch (IOException exception) {
+			System.err.println("Error loading background image: " + exception.getMessage());
+			backgroundImage = null;
+		}
 	}
 
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
+
+		if (backgroundImage != null) {
+			Graphics2D g2d = (Graphics2D) graphics.create();
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, BACKGROUND_IMAGE_OPACITY));
+			g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+			g2d.dispose();
+		}
 
 		int cellWidth = getWidth() / Board.getInstance().getNumColumns();
 		int cellHeight = getHeight() / Board.getInstance().getNumRows();

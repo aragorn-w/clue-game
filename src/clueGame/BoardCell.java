@@ -16,11 +16,16 @@
 
 package clueGame;
 
+import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.Set;
 
 public class BoardCell {
+	private final static float CELL_FILL_OPACITY = 0.7f;
+
 	private final int row;
 	private final int col;
 
@@ -51,24 +56,33 @@ public class BoardCell {
 		int pixelCol = col * width;
 		int pixelRow = row * height;
 
-		if (isRoom) {
-			if (!ClueGame.getInstance().getHumanTurnFinished() && Board.getInstance().getTargets().contains(this)) {
-				graphics.setColor(BoardPanel.TARGET_COLOR);
-				graphics.fillRect(pixelCol, pixelRow, width, height);
-			} else {
-				graphics.setColor(BoardPanel.ROOM_COLOR);
-				graphics.fillRect(pixelCol, pixelRow, width, height);
-			}
-			
-		} else if (isWalkway) {
-			if (!ClueGame.getInstance().getHumanTurnFinished() && Board.getInstance().getTargets().contains(this)) {
-				graphics.setColor(BoardPanel.TARGET_COLOR);
-				graphics.fillRect(pixelCol, pixelRow, width, height);
-			} else {
-				graphics.setColor(BoardPanel.WALKWAY_COLOR);
-				graphics.fillRect(pixelCol, pixelRow, width, height);
-			}
+		Graphics2D g2 = (Graphics2D) graphics.create();
+		Composite oldComp = g2.getComposite();
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, CELL_FILL_OPACITY));
 
+		if (isRoom) {
+			if (!ClueGame.getInstance().getHumanTurnFinished()
+			&& Board.getInstance().getTargets().contains(this)) {
+				g2.setColor(BoardPanel.TARGET_COLOR);
+			} else {
+				g2.setColor(BoardPanel.ROOM_COLOR);
+			}
+			g2.fillRect(pixelCol, pixelRow, width, height);
+
+		} else if (isWalkway) {
+			if (!ClueGame.getInstance().getHumanTurnFinished()
+			&& Board.getInstance().getTargets().contains(this)) {
+				g2.setColor(BoardPanel.TARGET_COLOR);
+			} else {
+				g2.setColor(BoardPanel.WALKWAY_COLOR);
+			}
+			g2.fillRect(pixelCol, pixelRow, width, height);
+		}
+
+		g2.setComposite(oldComp);
+		g2.dispose();
+
+		if (isWalkway) {
 			graphics.setColor(BoardPanel.WALKWAY_CELL_BORDER_COLOR);
 			graphics.drawRect(pixelCol, pixelRow, width, height);
 		}
