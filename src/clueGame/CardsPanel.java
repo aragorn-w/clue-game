@@ -172,14 +172,26 @@ public class CardsPanel extends JPanel {
 		frame.setVisible(true);
 
 		Player humanPlayer = Board.getInstance().getHumanPlayer();
-		Player computerPlayer = null;
+		Player firstComputerPlayer = null;
+		Player secondComputerPlayer = null;
+		Player thirdComputerPlayer = null;
 		for (Player player : Board.getInstance().getPlayers()) {
 			if (player != humanPlayer) {
-				computerPlayer = player;
-				break;
+				if (firstComputerPlayer == null) {
+					firstComputerPlayer = player;
+				} else {
+					if (secondComputerPlayer == null) {
+						secondComputerPlayer = player;
+					} else if (thirdComputerPlayer == null) {
+						thirdComputerPlayer = player;
+						break;
+					}
+				}
 			}
 		}
-		assert computerPlayer != null;
+		assert firstComputerPlayer != null;
+		assert secondComputerPlayer != null;
+		assert thirdComputerPlayer != null;
 		
 		// Test updaters after human player sees new cards of different types
 
@@ -195,18 +207,18 @@ public class CardsPanel extends JPanel {
 		humanPlayer.updateSeen(newWeaponCard);
 		cardsPanel.addSeenWeaponCard(newWeaponCard);
 
-		// Test updaters after a computer player sees new cards of different types
+		// Test updaters after computer players see new cards of different types
 
 		Card computerPersonCard = new Card("Professor Plum", CardType.PERSON);
-		computerPlayer.updateSeen(computerPersonCard);
+		firstComputerPlayer.updateSeen(computerPersonCard);
 		cardsPanel.addSeenPersonCard(computerPersonCard);
 
 		Card computerRoomCard = new Card("Kitchen", CardType.ROOM);
-		computerPlayer.updateSeen(computerRoomCard);
+		secondComputerPlayer.updateSeen(computerRoomCard);
 		cardsPanel.addSeenRoomCard(computerRoomCard);
 		
 		Card computerWeaponCard = new Card("Acid", CardType.WEAPON);
-		computerPlayer.updateSeen(computerWeaponCard);
+		thirdComputerPlayer.updateSeen(computerWeaponCard);
 		cardsPanel.addSeenWeaponCard(computerWeaponCard);
 	}
 }
