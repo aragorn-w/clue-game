@@ -95,10 +95,10 @@ public class ClueGame extends JFrame {
 		board.dealCards();
 		
 		Player player = board.getHumanPlayer();
+		
 		int roll = (int) (Math.random() * 6) + 1;
 		board.calcTargets(board.getCell(player.getRow(), player.getColumn()), roll);
-		
-		// theInstance.nextTurn();
+		theInstance.gameControlPanel.setTurnText(player, roll);
 
 		JOptionPane.showMessageDialog(
 			null,
