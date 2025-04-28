@@ -420,7 +420,7 @@ public class Board {
 		if (players.get(ClueGame.getInstance().getPlayerTurnIndex()).isDragged() && startCell.isRoomCenter()) {
 			targets.add(startCell);
 		}
-		if(targets.isEmpty()) {
+		if (targets.isEmpty()) {
 			targets.add(startCell);
 		}
 	}

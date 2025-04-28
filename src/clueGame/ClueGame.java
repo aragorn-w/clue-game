@@ -107,6 +107,7 @@ public class ClueGame extends JFrame {
 		board.calcTargets(board.getCell(player.getRow(), player.getColumn()), roll);
 		theInstance.gameControlPanel.setTurnText(player, roll);
 
+		// Loop elevator music, forever, as the background music
 		try {
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("data/ElevatorMusic.wav"));
 			Clip backgroundMusic = AudioSystem.getClip();
