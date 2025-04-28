@@ -61,7 +61,6 @@ public class BoardCell {
 			}
 			
 		} else if (isWalkway) {
-			
 			if (!ClueGame.getInstance().getHumanTurnFinished() && Board.getInstance().getTargets().contains(this)) {
 				graphics.setColor(BoardPanel.TARGET_COLOR);
 				graphics.fillRect(pixelCol, pixelRow, width, height);
