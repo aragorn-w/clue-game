@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 5, 2025
+ * Date Last Edited: April 27, 2025
  * 
  * Collaborators: None
  * 
@@ -21,19 +21,18 @@ import java.util.List;
 import java.util.Set;
 
 public class ComputerPlayer extends Player {
-	
-	Solution lastGuess;
-	final static double CHOOSE_UNSEEN_CHANCE = 0.5;
-	final static double CHOOSE_SEEN_CHANCE = 0.2;
+	private final static double CHOOSE_UNSEEN_CHANCE = 0.5;
+	private final static double CHOOSE_SEEN_CHANCE = 0.2;
 	
 	public ComputerPlayer(String name, String color, int row, int column) {
 		super(name, color, row, column);
 	}
 
 	public Solution createSuggestion() {
+		Board board = Board.getInstance();
 		List<Card> validWeaponCards = new ArrayList<>();
 		List<Card> validPersonCards = new ArrayList<>();
-		for (Card card: Board.getInstance().getTotalDeck()) {
+		for (Card card : board.getTotalDeck()) {
 			if (getSeenCards().contains(card)) {
 				continue;
 			}
@@ -45,11 +44,10 @@ public class ComputerPlayer extends Player {
 			}
 		}
 
-		BoardCell currentCell = Board.getInstance().getCell(getRow(), getColumn());
-		Card roomCard = Board.getInstance().getRoomCard(currentCell);
+		BoardCell currentCell = board.getCell(getRow(), getColumn());
+		Card roomCard = board.getRoomCard(currentCell);
 		Card personCard = validPersonCards.get((int) (Math.random() * validPersonCards.size()));
 		Card weaponCard = validWeaponCards.get((int) (Math.random() * validWeaponCards.size()));
-		lastGuess = new Solution(roomCard, personCard, weaponCard);
 		
 		return new Solution(roomCard, personCard, weaponCard);
 	}
@@ -57,10 +55,11 @@ public class ComputerPlayer extends Player {
 	public BoardCell selectTarget(Set<BoardCell> targets) {
 		// If a target is in a room and the room is not in that player's seen list,
 		// select the room (or if multiple rooms select randomly).
+		Board board = Board.getInstance();
 		List<BoardCell> roomTargets = new ArrayList<>();
-		for (BoardCell target: targets) {
+		for (BoardCell target : targets) {
 			if (target.isRoom()) {
-				if (!getSeenCards().contains(Board.getInstance().getRoomCard(target)) && Math.random() < CHOOSE_UNSEEN_CHANCE) {
+				if (!getSeenCards().contains(board.getRoomCard(target)) && Math.random() < CHOOSE_UNSEEN_CHANCE) {
 					return target;
 				}
 				roomTargets.add(target);
@@ -76,12 +75,11 @@ public class ComputerPlayer extends Player {
 		if (!targetList.isEmpty()) {
 			return targetList.get((int) (Math.random() * targetList.size()) % targetList.size());
 		}
-		return Board.getInstance().getCell(super.getRow(), super.getColumn());
+		return board.getCell(super.getRow(), super.getColumn());
 	}
 	
-	public int doAccusation() {
+	public int makeAccusation() {
 		if (super.getSeenCards().size() == Board.getInstance().getNonAnswerCards().size()) return 1;
 		return -1;
-		
 	}
 }

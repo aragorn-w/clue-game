@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 14, 2025
+ * Date Last Edited: April 27, 2025
  * 
  * Collaborators: None
  * 
@@ -87,7 +87,7 @@ public class CardsPanel extends JPanel {
 		cardSetPanel.setLayout(new GridLayout(0, 1));
 
 		cardSetPanel.add(new JLabel(cardSetLabel));
-		for (Card card: getCardsOfType(cardSet, type)) {
+		for (Card card : getCardsOfType(cardSet, type)) {
 			JTextField cardText = new JTextField(card.getName());
 			cardText.setEditable(false);
 			cardText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -109,7 +109,7 @@ public class CardsPanel extends JPanel {
 	private void configureSeenCardText(JTextField cardText, Card card) {
 		cardText.setEditable(false);
 		cardText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		for (Player player: Board.getInstance().getPlayers()) {
+		for (Player player : Board.getInstance().getPlayers()) {
 			if (player.getSeenCards().contains(card)) {
 				cardText.setBackground(player.getColor());
 				break;
@@ -119,7 +119,7 @@ public class CardsPanel extends JPanel {
 
 	private Set<Card> getCardsOfType(Set<Card> cards, CardType type) {
 		Set<Card> wantedCards = new HashSet<>();
-		for (Card card: cards) {
+		for (Card card : cards) {
 			if (card.getType() == type) {
 				wantedCards.add(card);
 			}

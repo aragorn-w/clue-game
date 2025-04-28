@@ -80,7 +80,7 @@ public class TestBoard {
 	}
 
 	private void findAllTargets(TestBoardCell startCell, int pathLength) {
-		for (TestBoardCell adjCell: startCell.getAdjList()) {
+		for (TestBoardCell adjCell : startCell.getAdjList()) {
 			// If the cell is a room, add it to the targets and return early since the player can't move through rooms
 			if (startCell.isRoom()) {
 				targets.add(startCell);

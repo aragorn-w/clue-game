@@ -69,7 +69,7 @@ public class GameSolutionTest {
 	public void testDisproval() {
 		// If player only has one matching card, it should be returned
 		Card answerWeaponCard = board.getTheAnswer().getWeaponCard();
-		for (Player player: board.getPlayers()) {
+		for (Player player : board.getPlayers()) {
 			player.updateHand(answerWeaponCard);
 			assertEquals(player.disproveSuggestion(board.getTheAnswer()), answerWeaponCard);
 		}
@@ -77,7 +77,7 @@ public class GameSolutionTest {
 		// If any player has more than one matching card, it should return random matching card
 		Card answerPersonCard = board.getTheAnswer().getPersonCard();
 		Set<Card> matchingCards = new HashSet<>();
-		for (Player player: board.getPlayers()) {
+		for (Player player : board.getPlayers()) {
 			player.updateHand(answerPersonCard);
 			// If after 999 random selections of trying to find both of the two possible
 			// disproving cards, we don't find both, then we are extremely unlucky.
@@ -97,7 +97,7 @@ public class GameSolutionTest {
 		}
 
 		// If player has no matching cards, it should return null
-		for (Player player: board.getPlayers()) {
+		for (Player player : board.getPlayers()) {
 			assertEquals(player.disproveSuggestion(board.getTheAnswer()), null);
 		}
 	}
@@ -106,7 +106,7 @@ public class GameSolutionTest {
 	@Test
 	public void testHandleSuggestion() {
 		// Suggestion that no one can disprove should return null
-		for (Player player: board.getPlayers()) {
+		for (Player player : board.getPlayers()) {
 			// Other players should not be able to disprove
 			assertEquals(board.handleSuggestion(player, board.getTheAnswer()), null);
 			// Suggesting player also should not be able to disprove
@@ -115,7 +115,7 @@ public class GameSolutionTest {
 
 		// Suggestion that only suggesting player can disprove should return null
 		Solution originalAnswer = board.getTheAnswer();
-		for (Player player: board.getPlayers()) {
+		for (Player player : board.getPlayers()) {
 			Solution newAnswer = new Solution(originalAnswer);
 			Card handCard = player.getHand().iterator().next();
 			switch (handCard.getType()) {
@@ -148,7 +148,7 @@ public class GameSolutionTest {
 		// When handling any computer player's suggestion, we should return the
 		// disproving card since the human player (who is not suggesting) is the only one
 		// who can disprove
-		for (Player computerPlayer: board.getPlayers()) {
+		for (Player computerPlayer : board.getPlayers()) {
 			if (!computerPlayer.equals(board.getHumanPlayer())) {
 				assertEquals(board.handleSuggestion(computerPlayer, humanSuggestion), handCard);
 				assertEquals(computerPlayer.disproveSuggestion(humanSuggestion), null);
@@ -168,7 +168,7 @@ public class GameSolutionTest {
 		boolean foundSecondCard = false;
 		while (!foundSecondCard && playersProcessed < board.getPlayers().size() - 1) {
 			otherPlayerIdx = (otherPlayerIdx + 1) % board.getPlayers().size();
-			for (Card card: board.getPlayers().get(otherPlayerIdx).getHand()) {
+			for (Card card : board.getPlayers().get(otherPlayerIdx).getHand()) {
 				if (card.getType() != disprovingCardOne.getType()) {
 					disprovingCardTwo = card;
 					foundSecondCard = true;

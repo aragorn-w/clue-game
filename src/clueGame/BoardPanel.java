@@ -63,11 +63,11 @@ public class BoardPanel extends JPanel {
 			}
 		}
 
-		for (Room room: Board.getInstance().getRooms()) {
+		for (Room room : Board.getInstance().getRooms()) {
 			room.drawLabel(graphics, cellWidth, cellHeight);
 		}
 
-		for (Player player: Board.getInstance().getPlayers()) {
+		for (Player player : Board.getInstance().getPlayers()) {
 			player.draw(graphics, cellWidth, cellHeight);
 		}
 	}

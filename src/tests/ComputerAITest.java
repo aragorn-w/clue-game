@@ -50,7 +50,7 @@ public class ComputerAITest {
 	public void testComputerSuggestion() {
 		// Test that room matches current room
 		ComputerPlayer computerPlayer = null;
-		for (Player player: board.getPlayers()) {
+		for (Player player : board.getPlayers()) {
 			if (!player.equals(board.getHumanPlayer())) {
 				computerPlayer = (ComputerPlayer) player;
 				break;
@@ -66,7 +66,7 @@ public class ComputerAITest {
 		// And if only one person is not seen, it's selected
 		Card firstUnseenWeapon = null;
 		Card firstUnseenPerson = null;
-		for (Card card: board.getTotalDeck()) {
+		for (Card card : board.getTotalDeck()) {
 			if (computerPlayer.getSeenCards().contains(card)) {
 				continue;
 			}
@@ -105,7 +105,7 @@ public class ComputerAITest {
 		// Add one more card of each non-room type so that we have multiple
 		// unseen cards of each non-room type to test suggestion random selection for
 		Card secondUnseenWeapon = null;
-		for (Card seenCard: computerPlayer.getSeenCards()) {
+		for (Card seenCard : computerPlayer.getSeenCards()) {
 			if (seenCard.getType() == CardType.WEAPON) {
 				secondUnseenWeapon = seenCard;
 				assertTrue(computerPlayer.removeFromSeen(secondUnseenWeapon));
@@ -115,7 +115,7 @@ public class ComputerAITest {
 		assertTrue(unseenWeapons.add(secondUnseenWeapon));
 
 		Card secondUnseenPerson = null;
-		for (Card seenCard: computerPlayer.getSeenCards()) {
+		for (Card seenCard : computerPlayer.getSeenCards()) {
 			if (seenCard.getType() == CardType.PERSON) {
 				secondUnseenPerson = seenCard;
 				assertTrue(computerPlayer.removeFromSeen(secondUnseenPerson));
@@ -180,7 +180,7 @@ public class ComputerAITest {
 			board.getCell(2, 3))
 		);
 		computerPlayer = null;
-		for (Player player: board.getPlayers()) {
+		for (Player player : board.getPlayers()) {
 			if (!player.equals(board.getHumanPlayer())
 			&& !player.getSeenCards().contains(unseenRoomCard)) {
 				computerPlayer = (ComputerPlayer) player;

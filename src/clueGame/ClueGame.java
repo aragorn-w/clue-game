@@ -7,7 +7,7 @@
  *
  * Authors: Aragorn Wang, Anya Streit
  * 
- * Date Last Edited: April 14, 2025
+ * Date Last Edited: April 27, 2025
  * 
  * Collaborators: None
  * 
@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class ClueGame extends JFrame {
-	
 	private static ClueGame theInstance;
 	
 	private int playerTurnIndex;
@@ -89,13 +88,14 @@ public class ClueGame extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		Board.getInstance().setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
-		Board.getInstance().initialize();
-		Board.getInstance().dealCards();
+		Board board = Board.getInstance();
+
+		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
+		board.initialize();
+		board.dealCards();
 		
 		theInstance = new ClueGame();
 
-		Board board = Board.getInstance();
 		Player player = board.getHumanPlayer();
 		int roll = (int)(Math.random() * 6) + 1;
 		board.calcTargets(
@@ -103,13 +103,12 @@ public class ClueGame extends JFrame {
 			roll
 		);
 		
-		
-		
-		JOptionPane.showMessageDialog(null, "Welcome to Clue! You are " + Board.getInstance().getHumanPlayer().getName() + ".", "ClueGame", JOptionPane.INFORMATION_MESSAGE);
-		
-		
-		
-		
+		JOptionPane.showMessageDialog(
+			null,
+			"Welcome to Clue! You are " + board.getHumanPlayer().getName() + ".",
+			"ClueGame",
+			JOptionPane.INFORMATION_MESSAGE
+		);
 	}
 	
 	public void nextTurn() {
@@ -134,7 +133,7 @@ public class ClueGame extends JFrame {
 			humanTurnFinished = false;			
 		} else {
 			// If it is not human player's turn
-			int accusationResult = ((ComputerPlayer)player).doAccusation();
+			int accusationResult = ((ComputerPlayer)player).makeAccusation();
 			if (accusationResult != -1){
 				this.handleAccusation(accusationResult);
 			}
@@ -203,18 +202,39 @@ public class ClueGame extends JFrame {
 	}
 	
 	private void handleAccusation(int accusationResult) {
-		Player player = Board.getInstance().getPlayers().get(playerTurnIndex);
+		Board board = Board.getInstance();
+		Player player = board.getPlayers().get(playerTurnIndex);
 		if (playerTurnIndex == 0) {
 			if (accusationResult == 1) {
-				JOptionPane.showMessageDialog(null, "You solved the Clue Mystery!", "You Win!", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(
+					null,
+					"You solved the Clue Mystery!",
+					"You Win!",
+					JOptionPane.INFORMATION_MESSAGE
+				);
 			} else {
-				JOptionPane.showMessageDialog(null, "That was not the correct answer. The solution was " + Board.getInstance().getTheAnswer(), "Game Over", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(
+					null,
+					"That was not the correct answer. The solution was " + board.getTheAnswer(),
+					"Game Over",
+					JOptionPane.INFORMATION_MESSAGE
+				);
 			}
 		} else {
 			if (accusationResult == 1) {
-				JOptionPane.showMessageDialog(null, player.getName() + " got the Solution! It was " + Board.getInstance().getTheAnswer(), "You Lose :(", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(
+					null,
+					player.getName() + " got the Solution! It was " + board.getTheAnswer(),
+					"You Lose :(",
+					JOptionPane.INFORMATION_MESSAGE
+				);
 			} else {
-				JOptionPane.showMessageDialog(null, player.getName() + " messed up. The solution was " + Board.getInstance().getTheAnswer(), "I guess you win.", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(
+					null,
+					player.getName() + " messed up. The solution was " + board.getTheAnswer(),
+					"I guess you win.",
+					JOptionPane.INFORMATION_MESSAGE
+				);
 			}
 		}
 		System.exit(0);
@@ -225,30 +245,32 @@ public class ClueGame extends JFrame {
 			JOptionPane.showMessageDialog(null, "It is not your turn.", "ERROR", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+
+		Board board = Board.getInstance();
 		
         int x = event.getX();
         int y = event.getY();
         
-        int col = x / (boardPanel.getWidth() / Board.getInstance().getNumColumns());
-        int row = y / (boardPanel.getHeight() / Board.getInstance().getNumRows());
+        int col = x / (boardPanel.getWidth() / board.getNumColumns());
+        int row = y / (boardPanel.getHeight() / board.getNumRows());
 
-        BoardCell clickedCell = Board.getInstance().getCell(row, col);
-        if (Board.getInstance().getTargets().contains(clickedCell)) {
-        	Board.getInstance().getHumanPlayer().move(clickedCell);
+        BoardCell clickedCell = board.getCell(row, col);
+        if (board.getTargets().contains(clickedCell)) {
+        	board.getHumanPlayer().move(clickedCell);
         	humanTurnFinished = true;
         	
         	boardPanel.repaint();
         	if (clickedCell.isRoomCenter()) {
         		ArrayList<Card> people = new ArrayList<>();
         		ArrayList<Card> weapons = new ArrayList<>();
-        		for(Card card : Board.getInstance().getNonAnswerCards()) {
+        		for(Card card : board.getNonAnswerCards()) {
         			switch(card.getType()) {
         				case WEAPON -> weapons.add(card);
         				case PERSON -> people.add(card);
         				default -> {}
         			}
         		}
-        		for(Card card : Board.getInstance().getTheAnswer().getCardSet()) {
+        		for(Card card : board.getTheAnswer().getCardSet()) {
         			switch(card.getType()) {
         				case WEAPON -> weapons.add(card);
         				case PERSON -> people.add(card);
@@ -257,7 +279,7 @@ public class ClueGame extends JFrame {
         		}
         		
         		// Create the combo boxes
-        		JComboBox<Card> room = new JComboBox<>(new Card[]{Board.getInstance().getRoomCard(clickedCell)});
+        		JComboBox<Card> room = new JComboBox<>(new Card[]{board.getRoomCard(clickedCell)});
                 JComboBox<Card> person = new JComboBox<>(people.toArray(new Card[0]));
                 JComboBox<Card> weapon = new JComboBox<>(weapons.toArray(new Card[0]));
 
@@ -271,13 +293,22 @@ public class ClueGame extends JFrame {
                 panel.add(weapon);
 
                 // Show the dialog
-                int result = JOptionPane.showConfirmDialog(null, panel, "Make Suggestion", JOptionPane.OK_CANCEL_OPTION);
+                int result = JOptionPane.showConfirmDialog(
+					null,
+					panel,
+					"Make Suggestion",
+					JOptionPane.OK_CANCEL_OPTION
+				);
 
                 if (result == JOptionPane.OK_OPTION) {
-                	Solution submitted = new Solution((Card) room.getSelectedItem(), (Card) person.getSelectedItem(), (Card) weapon.getSelectedItem());
+                	Solution submitted = new Solution(
+						(Card) room.getSelectedItem(),
+						(Card) person.getSelectedItem(),
+						(Card) weapon.getSelectedItem()
+					);
                 	Card card = gameControlPanel.setSuggestion(submitted);
-                	Board.getInstance().getPlayerFromCard(submitted.getPersonCard()).move(clickedCell);
-                	Board.getInstance().getPlayerFromCard(submitted.getPersonCard()).setDragged(true);
+                	board.getPlayerFromCard(submitted.getPersonCard()).move(clickedCell);
+                	board.getPlayerFromCard(submitted.getPersonCard()).setDragged(true);
     				boardPanel.repaint();
                 	if (card != null) {
                 		cardsPanel.addCard(card);
@@ -301,12 +332,4 @@ public class ClueGame extends JFrame {
 	public boolean getHumanTurnFinished() {
 		return humanTurnFinished;
 	}
-
-	
-	
-
-	
-
-	
-	
 }

@@ -182,7 +182,7 @@ public class Board {
 
 				try {
 					int colIndex = 0;
-					for (String marker: line) {
+					for (String marker : line) {
 						char initial = marker.charAt(0);
 						// if room is null, then the initial is not a valid room
 						Room room = getRoom(initial);
@@ -328,7 +328,7 @@ public class Board {
 	public void dealCards() {
 		Collections.shuffle(nonAnswerCards);
 		int playerIdx = 0;
-		for (Card card: nonAnswerCards) {
+		for (Card card : nonAnswerCards) {
 			players.get(playerIdx % players.size()).updateHand(card);
 			playerIdx = (playerIdx + 1) % players.size();
 		}
@@ -341,7 +341,7 @@ public class Board {
 	public Card handleSuggestion(Player player, Solution proposedAnswer) {
 		// Find player list index of player after the one making the suggestion
 		int nextPlayerIdx = 0;
-		for (Player otherPlayer: players) {
+		for (Player otherPlayer : players) {
 			if (otherPlayer.equals(player)) {
 				nextPlayerIdx = (nextPlayerIdx + 1) % players.size();
 				break;
@@ -428,7 +428,7 @@ public class Board {
 	private void findAllTargets(BoardCell startCell, int pathLength) {
 		visited.add(startCell);
 
-		for (BoardCell adjCell: startCell.getAdjList()) {
+		for (BoardCell adjCell : startCell.getAdjList()) {
 			if (visited.contains(adjCell)) {
 				continue;
 			}
