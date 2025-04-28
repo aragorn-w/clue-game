@@ -492,7 +492,6 @@ public class Board {
 				return player;
 			}
 		}
-		System.out.println("THIS SHOULD NOT PRINT");
 		return null;
 	}
 }

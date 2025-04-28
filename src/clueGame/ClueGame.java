@@ -21,8 +21,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -95,10 +102,19 @@ public class ClueGame extends JFrame {
 		board.dealCards();
 		
 		Player player = board.getHumanPlayer();
-		
+
 		int roll = (int) (Math.random() * 6) + 1;
 		board.calcTargets(board.getCell(player.getRow(), player.getColumn()), roll);
 		theInstance.gameControlPanel.setTurnText(player, roll);
+
+		try {
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("data/ElevatorMusic.wav"));
+			Clip backgroundMusic = AudioSystem.getClip();
+			backgroundMusic.open(audioStream);
+			backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException exception) {
+			System.err.println("Background music failed to play: " + exception.getMessage());
+		}
 
 		JOptionPane.showMessageDialog(
 			null,
